@@ -1,4 +1,22 @@
 [
-    {"filename": "basho.txt", "encoding": "shiftjs"},
-    {"filename": "baudelaire.txt", "encoding": "iso8859-12"}
+    {
+        "filename": "basho.txt",
+        "encoding": "shiftjs",
+        "language": "ja"
+    },
+    {
+        "filename": "baudelaire.txt",
+        "encoding": "iso8859-12",
+        "language": "fr"
+    },
+    {
+        "filename": "shakespeare.txt",
+        "encoding": "utf-8",
+        "language": "en"
+    },
+    {
+        "filename": "verlaine.txt",
+        "encoding": "utf-8",
+        "language": "fr"
+    }
 ]

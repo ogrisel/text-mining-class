@@ -1,9 +1,14 @@
 from text_mining_class.text_encoding import list_text_files
+from text_mining_class.text_encoding import count_bytes
 import text_mining_class
 from pathlib import Path
 
 package_path = text_mining_class.__path__[0]
 POETRY_FOLDER_PATH = Path(package_path) / 'data' / 'poetry'
+
+
+def test_count_words():
+    pass
 
 
 def test_list_text_files():
@@ -14,17 +19,6 @@ def test_list_text_files():
 
 
 def test_count_bytes_in_files():
-    pass
-
-
-def test_count_lines_in_files():
-    pass
-
-
-def test_count_words():
-    pass
-
-
-# def test_remove_western_accents():
-#     assert "C'est l'ete!" == remove_accents("C'est l'été!")
-#     assert "Ca va bien comme ca!" == remove_accents("Ça va bien comme ça!")
+    assert count_bytes(POETRY_FOLDER_PATH / 'basho.txt') == 81
+    assert count_bytes(POETRY_FOLDER_PATH / 'baudelaire.txt') == 1194
+    assert count_bytes(POETRY_FOLDER_PATH / 'shakespeare.txt') == 655
