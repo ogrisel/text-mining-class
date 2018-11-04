@@ -37,7 +37,14 @@ def sync_file(source, target_parent):
     assert source.is_file()
     assert target_parent.is_dir()
     target = target_parent / source.name
-    if not target.exists() or hash_file(source) != hash_file(target):
+    if (source.name != '__init__.py'
+            and source.name.endswith('.py')
+            and not source.name.startswith('test_')):
+        # This is a Python module with empty template and exercise
+        # instructions: it is not meant to be synchronized automatically.
+        return
+
+    elif not target.exists() or hash_file(source) != hash_file(target):
         print(f"Copying {source} to {target}")
         shutil.copyfile(source, target)
 
