@@ -16,7 +16,8 @@ def code_points(text, normalize=None):
 
 
 def remove_accents(text):
-    return ""
+    text = unicodedata.normalize('NFKD', text)
+    return ''.join([c for c in text if not unicodedata.combining(c)])
 
 
 def tokenize_western_language(text):
