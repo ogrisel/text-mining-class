@@ -8,9 +8,4 @@ def list_text_files(folder):
     paths of files that ends in '.txt' and sort the results by alphatebical
     order to produce a deterministic outcome.
     """
-    # Hints:
-    # - `folder_path = Path(folder)` converts a name to a pathlib.Path object
-    # - `folder_path.glob('*.ext')` can find all files that end in '.ext'
-    # - Python lists have `.sort()` method to be sorted in-place. You can
-    #   alternatively use the `sorted(my_list)` function to create a new list.
     return sorted(Path(folder).glob('*.txt'))
