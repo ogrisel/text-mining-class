@@ -1,12 +1,12 @@
 [
     {
         "filename": "basho.txt",
-        "encoding": "shiftjs",
+        "encoding": "shift_jis",
         "language": "ja"
     },
     {
         "filename": "baudelaire.txt",
-        "encoding": "iso8859-12",
+        "encoding": "iso_8859_15",
         "language": "fr"
     },
     {

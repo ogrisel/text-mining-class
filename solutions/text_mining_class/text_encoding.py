@@ -1,5 +1,5 @@
 from pathlib import Path
-import json
+import unicodedata
 
 
 def list_text_files(folder):
