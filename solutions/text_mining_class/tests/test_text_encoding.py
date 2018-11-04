@@ -3,7 +3,7 @@ import text_mining_class
 from pathlib import Path
 
 package_path = text_mining_class.__path__[0]
-POETRY_FOLDER_PATH = Path(package_path) / 'data/poetry'
+POETRY_FOLDER_PATH = Path(package_path) / 'data' / 'poetry'
 
 
 def test_list_text_files():
