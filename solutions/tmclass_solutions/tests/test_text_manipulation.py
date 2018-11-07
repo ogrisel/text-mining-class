@@ -1,3 +1,4 @@
+import pytest
 from tmclass_solutions.text_manipulation import code_points
 from tmclass_solutions.text_manipulation import remove_accents
 from tmclass_solutions.text_manipulation import tokenize_western_language
@@ -30,11 +31,19 @@ def test_tokenize_western_language():
     expected = ["This", "is", "a", "test"]
     assert tokenize_western_language("This is a test.") == expected
 
+    expected = ["42", "is", "a", "number"]
+    assert tokenize_western_language("42 is a number.") == expected
+
     expected = ["C", "est", "l", "ete"]
     assert tokenize_western_language("C'est l'ete!") == expected
 
+    expected = ["C", "est", "l", "été"]
+    assert tokenize_western_language("C'est l'été!") == expected
+
 
 def test_tokenize_japanese():
+    pytest.importorskip('janome')
+
     text = "古池や蛙飛び込む水の音"
-    expected = ['TODO']
+    expected = ['古池', 'や', '蛙', '飛び込む', '水', 'の', '音']
     assert tokenize_japanese(text) == expected
