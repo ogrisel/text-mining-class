@@ -23,4 +23,4 @@ def count_bytes(filepath):
     therefore compute the file size this way, even for text files.
     """
     with open(filepath, mode='rb') as f:
-        return len(f)
+        return len(f.read())

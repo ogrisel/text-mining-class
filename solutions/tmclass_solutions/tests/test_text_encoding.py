@@ -1,7 +1,7 @@
-from text_mining_class.text_encoding import list_text_files
-from text_mining_class.text_encoding import count_bytes
-from text_mining_class.utils import load_encoding_metadata
-from text_mining_class import POETRY_FOLDER_PATH
+from tmclass_solutions.text_encoding import list_text_files
+from tmclass_solutions.text_encoding import count_bytes
+from tmclass_solutions.utils import load_encoding_metadata
+from tmclass_solutions import POETRY_FOLDER_PATH
 
 
 def test_list_text_files():

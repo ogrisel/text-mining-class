@@ -1,9 +1,8 @@
-from text_mining_class.text_indexing import build_index
-import text_mining_class
+from tmclass_solutions.text_indexing import build_index
+import tmclass_solutions
 from pathlib import Path
 
-package_path = text_mining_class.__path__[0]
-POETRY_FOLDER_PATH = Path(package_path) / 'data' / 'poetry'
+POETRY_FOLDER_PATH = Path(tmclass_solutions.__path__[0]) / 'data' / 'poetry'
 
 
 def test_french_tokens():

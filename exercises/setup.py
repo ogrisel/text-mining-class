@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 
 setup(
-    name='text-mining-class',
+    name='text-mining-class-exercises',
     version='1.0.0.dev0',
     description="Introduction to text processing and mining",
     author='Olivier Grisel',

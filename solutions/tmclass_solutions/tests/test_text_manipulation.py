@@ -1,7 +1,7 @@
-from text_mining_class.text_manipulation import code_points
-from text_mining_class.text_manipulation import remove_accents
-from text_mining_class.text_manipulation import tokenize_western_language
-from text_mining_class.text_manipulation import tokenize_japanese
+from tmclass_solutions.text_manipulation import code_points
+from tmclass_solutions.text_manipulation import remove_accents
+from tmclass_solutions.text_manipulation import tokenize_western_language
+from tmclass_solutions.text_manipulation import tokenize_japanese
 
 
 # TODO: write a test to detect letters vs punctuation

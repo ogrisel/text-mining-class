@@ -17,6 +17,11 @@ IGNORED_EXTENSIONS = (
     '.egg-info',
 )
 
+FOLDER_RENAMINGS = {
+    "tmclass_solutions": "tmclass_exercises"
+}
+FOLDER_RENAMINGS_REVERSED = {v: k for k, v in FOLDER_RENAMINGS.items()}
+
 
 def should_ignore(path):
     if path.name.startswith('.'):
@@ -33,6 +38,10 @@ def hash_file(path):
         return sha256(f.read()).hexdigest()
 
 
+def hash_text(text):
+    return sha256(text.encode('utf-8')).hexdigest()
+
+
 def sync_file(source, target_parent):
     assert source.is_file()
     assert target_parent.is_dir()
@@ -44,6 +53,18 @@ def sync_file(source, target_parent):
         # instructions: it is not meant to be synchronized automatically.
         return
 
+    elif source.name.endswith('.py'):
+        with open(source, mode='r', encoding="utf-8") as f:
+            original_text = f.read()
+        rewritten_text = original_text.replace("text-mining-class-solutions",
+                                               "text-mining-class-exercises")
+        rewritten_text = rewritten_text.replace("tmclass_solutions",
+                                                "tmclass_exercises")
+        if (not target.exists()
+                or hash_text(rewritten_text) != hash_file(target)):
+            print(f"Synchronizing {source} to {target}")
+            target.write_text(rewritten_text, encoding='utf-8')
+
     elif not target.exists() or hash_file(source) != hash_file(target):
         print(f"Copying {source} to {target}")
         shutil.copyfile(source, target)
@@ -53,7 +74,9 @@ def sync_folder(source, target_parent, target_name=None):
     assert source.is_dir()
     assert target_parent.is_dir()
 
-    target_name = target_name if target_name is not None else source.name
+    if target_name is None:
+        target_name = FOLDER_RENAMINGS.get(source.name, source.name)
+
     target = target_parent / target_name
     if not target.exists():
         print(f"Creating directory {target}")
@@ -64,7 +87,9 @@ def sync_folder(source, target_parent, target_name=None):
         if should_ignore(target_child):
             continue
 
-        if target_child.name not in source_filenames:
+        renamed_child_name = FOLDER_RENAMINGS_REVERSED.get(
+            target_child.name, target_child.name)
+        if renamed_child_name not in source_filenames:
             print(f"Deleting {target_child}")
             if target_child.is_dir():
                 shutil.rmtree(target_child)
