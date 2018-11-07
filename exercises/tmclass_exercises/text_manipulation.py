@@ -1,4 +1,3 @@
-import unicodedata
 
 
 def code_points(text, normalize=None):
@@ -11,19 +10,23 @@ def code_points(text, normalize=None):
 
     https://docs.python.org/3/library/unicodedata.html#unicodedata.normalize
     """
-    if normalize is not None:
-        text = unicodedata.normalize(normalize, text)
-    return [ord(c) for c in text]
+    # HINTS:
+    # - `ord("a")` returns the integer code point of "a"
+    # - list("abc") return a list of characters: ["a", "b", "c"]
+    # - use `text = unicodedata.normalize("NFC", text)` to normalize some text
+    #   using the NFC scheme.
+
+    # TODO: write me!
+    return []
 
 
 def remove_accents(text):
-    text = unicodedata.normalize('NFKD', text)
-    return ''.join([c for c in text if not unicodedata.combining(c)])
+    return ""
 
 
 def tokenize_western_language(text):
-    return ""
+    return []
 
 
 def tokenize_japanese(text):
-    return ""
+    return []
