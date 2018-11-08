@@ -1,6 +1,8 @@
+import pytest
+from pathlib import Path
+
 from tmclass_exercises.text_indexing import build_index
 import tmclass_exercises
-from pathlib import Path
 
 POETRY_FOLDER_PATH = Path(tmclass_exercises.__path__[0]) / 'data' / 'poetry'
 
@@ -38,19 +40,21 @@ def test_english_tokens():
     assert results == expected_results
 
 
-def test_japanese_tokens():
-    index = build_index(POETRY_FOLDER_PATH)
-    results = index.get("蛙")
-    expected_results = [
-        ('basho.txt', [1]),
-    ]
-    assert results == expected_results
-
-
 def test_persian_tokens():
     index = build_index()
     results = index.get("خزان")
     expected_results = [
         ('rumi.txt', [1, 46]),
+    ]
+    assert results == expected_results
+
+
+def test_japanese_tokens():
+    pytest.importorskip("janome")  # skip this test if janome is not installed
+
+    index = build_index(POETRY_FOLDER_PATH)
+    results = index.get("蛙")
+    expected_results = [
+        ('basho.txt', [1]),
     ]
     assert results == expected_results

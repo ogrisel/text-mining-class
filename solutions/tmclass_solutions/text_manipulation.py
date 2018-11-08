@@ -16,6 +16,17 @@ def code_points(text, normalize=None):
     return [ord(c) for c in text]
 
 
+def character_categories(text, normalize=None):
+    """Return the list of unicode categories for each character in text
+
+    If normalize is not None, apply the specified normalization before
+    extracting the categories.
+    """
+    if normalize is not None:
+        text = unicodedata.normalize(normalize, text)
+    return [unicodedata.category(c) for c in text]
+
+
 def remove_accents(text):
     """Replace accentuated characters by their non-accentuated counterparts
 

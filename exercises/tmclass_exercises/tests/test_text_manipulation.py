@@ -22,9 +22,19 @@ def test_unicode_normalization():
 
 def test_character_category():
     text = "C’est l’été 2018!"
-    categories = character_categories()
+    categories = character_categories(text)
     assert len(categories) == len(text)
-    assert categories == [""]
+    assert categories == [
+        "Lu", "Pf", "Ll", "Ll", "Ll", "Zs",  # "C'est "
+        "Ll", "Pf", "Ll", "Ll", "Ll", "Zs",  # "l’été "
+        "Nd", "Nd", "Nd", "Nd", "Po"]        # "2018!"
+
+    categories = character_categories(text, normalize="NFD")
+    assert len(categories) == len(text) + 2  # 2 accents
+    assert categories == [
+        "Lu", "Pf", "Ll", "Ll", "Ll", "Zs",              # "C'est "
+        "Ll", "Pf", "Ll", "Mn", "Ll", "Ll", "Mn", "Zs",  # "l’été "
+        "Nd", "Nd", "Nd", "Nd", "Po"]                    # "2018!"
 
 
 def test_remove_accents():
@@ -33,21 +43,31 @@ def test_remove_accents():
 
 
 def test_tokenize_western_language():
+    text = "This is a test."
     expected = ["This", "is", "a", "test"]
-    assert tokenize_western_language("This is a test.") == expected
+    assert tokenize_western_language(text) == expected
 
+    text = "42 is a number."
     expected = ["42", "is", "a", "number"]
-    assert tokenize_western_language("42 is a number.") == expected
+    assert tokenize_western_language(text) == expected
 
+    text = "C’est l’ete!"
     expected = ["C", "est", "l", "ete"]
-    assert tokenize_western_language("C’est l’ete!") == expected
+    assert tokenize_western_language(text) == expected
 
+    text = "C’est l’été!"
     expected = ["C", "est", "l", "été"]
-    assert tokenize_western_language("C’est l’été!") == expected
+    assert tokenize_western_language(text) == expected
+
+
+def test_tokenize_persian():
+    text = "ای باغبان ای باغبان آمد خزان آمد خزان"
+    expected = ["ای", "باغبان", "ای", "باغبان", "آمد", "خزان", "آمد", "خزان"]
+    assert tokenize_western_language(text) == expected
 
 
 def test_tokenize_japanese():
-    pytest.importorskip('janome')
+    pytest.importorskip('janome')  # skip this test if janome is not installed
 
     text = "古池や蛙飛び込む水の音"
     expected = ['古池', 'や', '蛙', '飛び込む', '水', 'の', '音']
