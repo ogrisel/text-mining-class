@@ -17,19 +17,43 @@ def code_points(text, normalize=None):
 
 
 def remove_accents(text):
+    """Replace accentuated characters by their non-accentuated counterparts
+
+    A simple way to do this would be to decompose accentuated characters in the
+    sequence using one of the unicode decomposition schemes and then filter the
+    resulting sequence to remove combining characters (also known as
+    diacritical marks).
+
+    Comments: the following solution is a very naive implementation of that
+    only uses basic operations on the sequence of unicode characters.
+
+    A more efficient approach that works only for languages that use the
+    latin alphabet would use batch conversion to ASCII characters as done in:
+
+        sklearn.feature_extraction.text.strip_accents_ascii
+
+    """
     text = unicodedata.normalize('NFKD', text)
     return "".join([c for c in text if not unicodedata.combining(c)])
 
 
 def tokenize_western_language(text):
-    # Note: the following is a very naive implementation of a western language
-    # tokenizer that only uses basic operations on the sequence of unicode
-    # characters.
-    #
-    # A more efficient way to implement this would be to use the regular
-    # expression module of Python. For instance look at the source code of the
-    # following code extracted from scikit-learn:
-    #     re.compile(r'(?u)\b\w+\b').findall(text)
+    r"""Split a text document as a sequence of word-level tokens
+
+    Words are separated by any spacing or punctuation. The resulting sequence
+    of tokens is therefore devoid of any punctuation information from the
+    original text.
+
+    Comments: the following solution is a very naive (and slow) implementation
+    of a western language tokenizer that only uses basic operations on the
+    sequence of unicode characters.
+
+    A more efficient way to implement this would be to use the regular
+    expression module of Python. For instance look at the source code of the
+    following code extracted from scikit-learn:
+
+        tokens = re.compile(r'(?u)\b\w+\b').findall(text)
+    """
     collected_tokens = []
     current_token = ""
     for character in text:
@@ -46,5 +70,11 @@ def tokenize_western_language(text):
 
 
 def tokenize_japanese(text):
+    """Tokenize a string of Japanese text as a sequence of "word" tokens
+
+    Japanese text needs to be segmented using a language aware strategy
+    (morphological analysis): it is not possible to use spaces and punctuation
+    only to itentify words.
+    """
     from janome.tokenizer import Tokenizer
     return Tokenizer().tokenize(text, wakati=True)

@@ -23,7 +23,7 @@ def test_unicode_normalization():
 
 
 def test_remove_accents():
-    assert "C'est l'ete!" == remove_accents("C'est l'été!")
+    assert "C’est l’ete!" == remove_accents("C’est l’été!")
     assert "Ca va bien comme ca!" == remove_accents("Ça va bien comme ça!")
 
 
@@ -35,10 +35,10 @@ def test_tokenize_western_language():
     assert tokenize_western_language("42 is a number.") == expected
 
     expected = ["C", "est", "l", "ete"]
-    assert tokenize_western_language("C'est l'ete!") == expected
+    assert tokenize_western_language("C’est l’ete!") == expected
 
     expected = ["C", "est", "l", "été"]
-    assert tokenize_western_language("C'est l'été!") == expected
+    assert tokenize_western_language("C’est l’été!") == expected
 
 
 def test_tokenize_japanese():
