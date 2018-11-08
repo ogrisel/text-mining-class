@@ -1,5 +1,4 @@
 from pathlib import Path
-import unicodedata
 
 
 def list_text_files(folder):

@@ -40,4 +40,17 @@ def test_english_tokens():
 
 def test_japanese_tokens():
     index = build_index(POETRY_FOLDER_PATH)
-    # TODO
+    results = index.get("蛙")
+    expected_results = [
+        ('basho.txt', [1]),
+    ]
+    assert results == expected_results
+
+
+def test_persian_tokens():
+    index = build_index()
+    results = index.get("خزان")
+    expected_results = [
+        ('rumi.txt', [1, 46]),
+    ]
+    assert results == expected_results

@@ -1,11 +1,9 @@
 import pytest
 from tmclass_exercises.text_manipulation import code_points
+from tmclass_exercises.text_manipulation import character_categories
 from tmclass_exercises.text_manipulation import remove_accents
 from tmclass_exercises.text_manipulation import tokenize_western_language
 from tmclass_exercises.text_manipulation import tokenize_japanese
-
-
-# TODO: write a test to detect letters vs punctuation
 
 
 def test_code_points():
@@ -20,6 +18,13 @@ def test_code_points():
 def test_unicode_normalization():
     assert code_points("Ça va", normalize="NFC") == [199, 97, 32, 118, 97]
     assert code_points("Ça va", normalize="NFD") == [67, 807, 97, 32, 118, 97]
+
+
+def test_character_category():
+    text = "C’est l’été 2018!"
+    categories = character_categories()
+    assert len(categories) == len(text)
+    assert categories == [""]
 
 
 def test_remove_accents():

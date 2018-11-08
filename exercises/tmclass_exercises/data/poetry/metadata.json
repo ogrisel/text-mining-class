@@ -10,8 +10,13 @@
         "language": "fr"
     },
     {
-        "filename": "shakespeare.txt",
+        "filename": "rumi.txt",
         "encoding": "utf-8",
+        "language": "fa"
+    },
+    {
+        "filename": "shakespeare.txt",
+        "encoding": "ascii",
         "language": "en"
     },
     {
