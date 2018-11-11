@@ -42,7 +42,7 @@ def test_remove_accents():
     assert "Ca va bien comme ca!" == remove_accents("Ça va bien comme ça!")
 
 
-def test_tokenize_generic():
+def test_tokenize_english():
     text = "This is a test."
     expected = ["This", "is", "a", "test"]
     assert tokenize_generic(text) == expected
@@ -51,6 +51,8 @@ def test_tokenize_generic():
     expected = ["42", "is", "a", "number"]
     assert tokenize_generic(text) == expected
 
+
+def test_tokenize_french():
     text = "C’est l’ete!"
     expected = ["C", "est", "l", "ete"]
     assert tokenize_generic(text) == expected
