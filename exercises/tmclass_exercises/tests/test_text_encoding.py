@@ -21,6 +21,7 @@ def test_count_bytes():
 
     assert count_bytes("abc".encode("ascii")) == 3
     assert count_bytes("é".encode("iso-8859-1")) == 1
+    assert count_bytes("é".encode("iso-8859-15")) == 1
     assert count_bytes("é".encode("utf-8")) == 2
 
 
@@ -65,7 +66,7 @@ def test_text_in_files():
     assert text_in_file(text, filepath, encoding="shift-jis")
 
 
-def test_convert_files():
+def test_convert_files_to_utf8():
     output_path = DATA_FOLDER_PATH / "poetry_utf8"
     # Delete the test output folder and its contents if it already exists.
     if output_path.exists():
@@ -80,7 +81,8 @@ def test_convert_files():
         source_filepath = POETRY_FOLDER_PATH / filename
         target_filepath = output_path / filename
         source_encoding = entry["encoding"]
-        convert_text_file(source_filepath, source_encoding, target_filepath)
+        convert_text_file(source_filepath, source_encoding,
+                          target_filepath, target_encoding="utf-8")
 
     # Check that all the files have been created in the output folder
     filenames = sorted([path.name for path in output_path.glob("*.txt")])

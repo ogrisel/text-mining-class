@@ -21,6 +21,7 @@ def test_count_bytes():
 
     assert count_bytes("abc".encode("ascii")) == 3
     assert count_bytes("é".encode("iso-8859-1")) == 1
+    assert count_bytes("é".encode("iso-8859-15")) == 1
     assert count_bytes("é".encode("utf-8")) == 2
 
 
