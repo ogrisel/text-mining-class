@@ -94,6 +94,9 @@ venv.bak/
 .spyderproject
 .spyproject
 
+# VS Code
+.vscode
+
 # Rope project settings
 .ropeproject
 
@@ -102,3 +105,9 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+
+# Ingored generated data files
+exercises/tmclass_exercises/data/poetry_utf8
+solutions/tmclass_solutions/data/poetry_utf8
+

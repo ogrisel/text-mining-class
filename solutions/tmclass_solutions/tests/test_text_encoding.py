@@ -1,7 +1,12 @@
+import shutil
+import json
+
 from tmclass_solutions.text_encoding import count_bytes
 from tmclass_solutions.text_encoding import text_in_bytes
 from tmclass_solutions.text_encoding import count_bytes_in_file
 from tmclass_solutions.text_encoding import text_in_file
+from tmclass_solutions.text_encoding import convert_text_file
+from tmclass_solutions import DATA_FOLDER_PATH
 from tmclass_solutions import POETRY_FOLDER_PATH
 import pytest
 
@@ -58,3 +63,45 @@ def test_text_in_files():
     text = "古池や蛙飛び込む水の音"
     filepath = POETRY_FOLDER_PATH / 'basho.txt'
     assert text_in_file(text, filepath, encoding="shift-jis")
+
+
+def test_convert_files_to_utf8():
+    output_path = DATA_FOLDER_PATH / "poetry_utf8"
+    # Delete the test output folder and its contents if it already exists.
+    if output_path.exists():
+        shutil.rmtree(output_path)
+    output_path.mkdir()
+
+    with open(POETRY_FOLDER_PATH / "metadata.json") as f:
+        source_metadata = json.load(f)
+
+    for entry in source_metadata:
+        filename = entry["filename"]
+        source_filepath = POETRY_FOLDER_PATH / filename
+        target_filepath = output_path / filename
+        source_encoding = entry["encoding"]
+        convert_text_file(source_filepath, source_encoding,
+                          target_filepath, target_encoding="utf-8")
+
+    # Check that all the files have been created in the output folder
+    filenames = sorted([path.name for path in output_path.glob("*.txt")])
+    assert filenames == ["basho.txt", "baudelaire.txt", "rumi.txt",
+                         "shakespeare.txt", "verlaine.txt"]
+
+    # Make some checks
+    text = "églogues"
+    filepath = output_path / 'baudelaire.txt'
+    assert filepath.exists()
+    assert text_in_file(text, filepath, encoding="utf-8")
+
+    text = "古池や蛙飛び込む水の音"
+    filepath = output_path / 'basho.txt'
+    assert text_in_file(text, filepath, encoding="utf-8")
+
+    text = "باغبان"
+    filepath = output_path / 'rumi.txt'
+    assert text_in_file(text, filepath, encoding="utf-8")
+
+    text = "winter"
+    filepath = output_path / 'shakespeare.txt'
+    assert text_in_file(text, filepath, encoding="utf-8")

@@ -39,3 +39,19 @@ def text_in_file(text, filepath, encoding="utf-8"):
     with open(filepath, mode="r", encoding=encoding) as f:
         text_content = f.read()
     return text in text_content
+
+
+def convert_text_file(source_filepath, source_encoding, target_filepath,
+                      target_encoding='utf-8'):
+    """Copy the text content of a file to a specified target encoding
+
+    To do so:
+        - open the source file in read, text mode using the source encoding;
+        - read the text content;
+        - open the target file in write, text mode using the target encoding;
+        - write the text content.
+    """
+    with open(source_filepath, mode="r", encoding=source_encoding) as f:
+        text_content = f.read()
+    with open(target_filepath, mode="w", encoding=target_encoding) as f:
+        f.write(text_content)

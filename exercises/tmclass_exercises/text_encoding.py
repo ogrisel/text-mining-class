@@ -61,3 +61,23 @@ def text_in_file(text, filepath, encoding="utf-8"):
 
     # TODO: replace the following by the answer:
     return False
+
+
+def convert_text_file(source_filepath, source_encoding, target_filepath,
+                      target_encoding='utf-8'):
+    """Copy the text content of a file to a specified target encoding
+
+    To do so:
+        - open the source file in read, text mode using the source encoding;
+        - read the text content;
+        - open the target file in write, text mode using the target encoding;
+        - write the text content.
+    """
+    # Hints:
+    # - To open a file in write mode, pass `mode='w'` to the `open` function,
+    #   along with the correct text encoding (for instance utf-8).
+    # - To write `text_content` to an open file object `f`, use:
+    #   `f.write(text_content)`
+
+    # TODO: replace the following by the answer:
+    pass
