@@ -48,7 +48,7 @@ def remove_accents(text):
     return "".join([c for c in text if not unicodedata.combining(c)])
 
 
-def tokenize_western_language(text):
+def tokenize_generic(text):
     r"""Split a text document as a sequence of word-level tokens
 
     Words are separated by any spacing or punctuation. The resulting sequence
@@ -77,6 +77,8 @@ def tokenize_western_language(text):
             if current_token != "":
                 collected_tokens.append(current_token)
             current_token = ""
+    if current_token != "":
+        collected_tokens.append(current_token)
     return collected_tokens
 
 

@@ -2,7 +2,7 @@ import pytest
 from tmclass_solutions.text_manipulation import code_points
 from tmclass_solutions.text_manipulation import character_categories
 from tmclass_solutions.text_manipulation import remove_accents
-from tmclass_solutions.text_manipulation import tokenize_western_language
+from tmclass_solutions.text_manipulation import tokenize_generic
 from tmclass_solutions.text_manipulation import tokenize_japanese
 
 
@@ -42,28 +42,28 @@ def test_remove_accents():
     assert "Ca va bien comme ca!" == remove_accents("Ça va bien comme ça!")
 
 
-def test_tokenize_western_language():
+def test_tokenize_generic():
     text = "This is a test."
     expected = ["This", "is", "a", "test"]
-    assert tokenize_western_language(text) == expected
+    assert tokenize_generic(text) == expected
 
     text = "42 is a number."
     expected = ["42", "is", "a", "number"]
-    assert tokenize_western_language(text) == expected
+    assert tokenize_generic(text) == expected
 
     text = "C’est l’ete!"
     expected = ["C", "est", "l", "ete"]
-    assert tokenize_western_language(text) == expected
+    assert tokenize_generic(text) == expected
 
     text = "C’est l’été!"
     expected = ["C", "est", "l", "été"]
-    assert tokenize_western_language(text) == expected
+    assert tokenize_generic(text) == expected
 
 
 def test_tokenize_persian():
     text = "ای باغبان ای باغبان آمد خزان آمد خزان"
     expected = ["ای", "باغبان", "ای", "باغبان", "آمد", "خزان", "آمد", "خزان"]
-    assert tokenize_western_language(text) == expected
+    assert tokenize_generic(text) == expected
 
 
 def test_tokenize_japanese():

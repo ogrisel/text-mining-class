@@ -50,7 +50,7 @@ def remove_accents(text):
     return ""
 
 
-def tokenize_western_language(text):
+def tokenize_generic(text):
     """Split a text document as a sequence of word-level tokens
 
     Words are separated by any spacing or punctuation. The resulting sequence
