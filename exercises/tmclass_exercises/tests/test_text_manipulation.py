@@ -21,25 +21,25 @@ def test_unicode_normalization():
 
 
 def test_character_category():
-    text = "C’est l’été 2018!"
+    text = "C’est l’été 2018 !"
     categories = character_categories(text)
     assert len(categories) == len(text)
     assert categories == [
         "Lu", "Pf", "Ll", "Ll", "Ll", "Zs",  # "C'est "
         "Ll", "Pf", "Ll", "Ll", "Ll", "Zs",  # "l’été "
-        "Nd", "Nd", "Nd", "Nd", "Po"]        # "2018!"
+        "Nd", "Nd", "Nd", "Nd", "Zs", "Po"]  # "2018 !"
 
     categories = character_categories(text, normalize="NFD")
     assert len(categories) == len(text) + 2  # 2 accents
     assert categories == [
         "Lu", "Pf", "Ll", "Ll", "Ll", "Zs",              # "C'est "
         "Ll", "Pf", "Ll", "Mn", "Ll", "Ll", "Mn", "Zs",  # "l’été "
-        "Nd", "Nd", "Nd", "Nd", "Po"]                    # "2018!"
+        "Nd", "Nd", "Nd", "Nd", "Zs", "Po"]              # "2018 !"
 
 
 def test_remove_accents():
-    assert "C’est l’ete!" == remove_accents("C’est l’été!")
-    assert "Ca va bien comme ca!" == remove_accents("Ça va bien comme ça!")
+    assert "C’est l’ete !" == remove_accents("C’est l’été !")
+    assert "Ca va bien comme ca !" == remove_accents("Ça va bien comme ça !")
 
 
 def test_tokenize_english():
@@ -53,11 +53,11 @@ def test_tokenize_english():
 
 
 def test_tokenize_french():
-    text = "C’est l’ete!"
+    text = "C’est l’ete !"
     expected = ["C", "est", "l", "ete"]
     assert tokenize_generic(text) == expected
 
-    text = "C’est l’été!"
+    text = "C’est l’été !"
     expected = ["C", "est", "l", "été"]
     assert tokenize_generic(text) == expected
 
