@@ -1,5 +1,6 @@
 name: tmclass
 dependencies:
+  - pip
   - jupyterlab
   - matplotlib
   - scikit-learn
