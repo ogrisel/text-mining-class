@@ -41,10 +41,13 @@ def test_tokenize_text():
 def test_index_text():
     index = TextIndex()
     index.index_text("doc1", "winter is coming!", language="en")
-    index.index_text("doc2", "ای باغبان", language="fa")
+    assert len(index) == 1
 
-    assert index.lookup_token("باغبان") == [('doc2', [1])]
-    assert index.lookup_token("winter") == [('doc1', [1])]
+    index.index_text("doc2", "ای باغبان", language="fa")
+    assert len(index) == 2
+
+    assert index.lookup_token("winter") == ["doc1"]
+    assert index.lookup_token("باغبان") == ["doc2"]
 
 
 def test_index_french_text_files():
@@ -53,32 +56,20 @@ def test_index_french_text_files():
                           language="fr", encoding="iso-8859-15")
     index.index_text_file(POETRY_FOLDER_PATH / 'verlaine.txt',
                           language="fr", encoding="utf-8")
+    assert len(index) == 2
 
     # Note that the following does not retrieve the occurence of the word
     # "automnes" from baudelaire.txt because we did not implement any
     # normalization strategy for plural forms. This minimal full-text index
     # could be improved in that respect.
-    results = index.lookup_token("automne")
-    expected_results = [
-        ('verlaine.txt', [1, 6]),
-    ]
-    assert results == expected_results
+    assert index.lookup_token("automne") == ["verlaine.txt"]
 
     # Common words can return many results in many documents.
-    results = index.lookup_token("mon")
-    expected_results = [
-        ('baudelaire.txt', [26, 26, 29]),
-        ('verlaine.txt', [7]),
-    ]
-    assert results == expected_results
+    assert index.lookup_token("mon") == ["baudelaire.txt", "verlaine.txt"]
 
     # Token with accents are "normalized" to make it easy to query for
     # documents without having to type the accents.
-    results = index.lookup_token("feeriques")
-    expected_results = [
-        ('baudelaire.txt', [20]),
-    ]
-    assert results == expected_results
+    assert index.lookup_token("feeriques") == ["baudelaire.txt"]
 
     # Words not present in the indexed documents cannot be found as indexed
     # tokens:
@@ -90,28 +81,15 @@ def test_index_english_text_files():
     index.index_text_file(POETRY_FOLDER_PATH / 'shakespeare.txt',
                           language="en", encoding="utf-8")
 
-    results = index.lookup_token("thy")
-    expected_results = [
-        ('shakespeare.txt', [7, 9, 20]),
-    ]
-    assert results == expected_results
-
-    results = index.lookup_token("holly")
-    expected_results = [
-        ('shakespeare.txt', [11, 13, 22, 24]),
-    ]
-    assert results == expected_results
+    assert index.lookup_token("thy") == ["shakespeare.txt"]
+    assert index.lookup_token("holly") == ["shakespeare.txt"]
 
 
 def test_index_persian_text_files():
     index = TextIndex()
     index.index_text_file(POETRY_FOLDER_PATH / 'rumi.txt',
                           language="fa", encoding="utf-8")
-    results = index.lookup_token("خزان")
-    expected_results = [
-        ('rumi.txt', [1, 1, 61]),
-    ]
-    assert results == expected_results
+    assert index.lookup_token("خزان") == ["rumi.txt"]
 
 
 def test_index_japanese_text_files():
@@ -120,14 +98,12 @@ def test_index_japanese_text_files():
     index = TextIndex()
     index.index_text_file(POETRY_FOLDER_PATH / 'basho.txt',
                           language="ja", encoding="shift-jis")
-    results = index.lookup_token("蛙")
-    expected_results = [
-        ('basho.txt', [1]),
-    ]
-    assert results == expected_results
+    assert index.lookup_token("蛙") == ["basho.txt"]
 
 
 def test_complex_queries():
+    pytest.importorskip("janome")  # skip this test if janome is not installed
+
     index = TextIndex()
     index.index_text_file(POETRY_FOLDER_PATH / 'basho.txt',
                           language="ja", encoding="shift-jis")
@@ -142,4 +118,8 @@ def test_complex_queries():
 
     assert index.query("feeriques palais", language="fr") == ["baudelaire.txt"]
     assert index.query("Féeriques palais!", language="fr") == ["baudelaire.txt"]
+
     assert index.query("Winter Bite", language="en") == ["shakespeare.txt"]
+    assert index.query("水の音", language="ja") == ["basho.txt"]
+
+    assert index.query("unexistingtoken", language="en") == []

@@ -7,20 +7,20 @@ class TextIndex:
     """Simplistic in-memory full-text index
 
     The internal data-structure of the index is built on top of nested Python
-    dicts and lists: for each token, store a dictionary with document names as
-    keys a list of line numbers as values:
+    dicts and sets: for each token, store a set with the names of the documents
+    holding that token:
 
         {
-            "token_1": {"doc_3": [12, 42], "doc_5": [1]},
-            "token_2": {"doc_1": [17, 21]},
+            "token_1": {"doc_3", "doc_5"},
+            "token_2": {"doc_1"},
             ...
         }
 
     The methods named `index_text` and `index_text_file` can process text
-    documents to index them into that data-stracture.
+    documents to index them into that data-structure.
 
-    The method `look_token` retrieves the list documents and line numbers that
-    contain a specific token.
+    The method `lookup_token` retrieves the list of the names of documents
+    containing that token.
 
     The method `query` implements document retrieval for text queries that can
     contain several words at once.
@@ -28,15 +28,26 @@ class TextIndex:
 
     def __init__(self):
         # Initialize an empty Python dictionary to map text token to the the
-        # document names and line numbers that contains that token.
+        # names of document that contains that token.
         self._token_to_doc = {}
 
-    def lookup_token(self, token):
-        """Retrieve the list of documents and line numbers for a give token
+    def __len__(self):
+        """Return the total number of indexed documents
 
-        The list is sorted by document names to get deterministic outputs.
+        Empty document (without any tokens) are ignored.
         """
-        return sorted(self._token_to_doc.get(token, {}).items())
+        all_documents = set()
+        for document_set in self._token_to_doc.values():
+            all_documents.update(document_set)
+        return len(all_documents)
+
+    def lookup_token(self, token):
+        """Retrieve the list of names of documents containing a give token
+
+        The list of names is sorted by alphabetical order to get deterministic
+        outputs so as to ease testing.
+        """
+        return sorted(self._token_to_doc.get(token, set()))
 
     def preprocess(self, text, language=None):
         """Apply language specific preprocessing
@@ -69,24 +80,20 @@ class TextIndex:
         else:
             return tokenize_generic(text)
 
-    def index_text(self, doc_name, text_content, language=None):
+    def index_text(self, document_name, text_content, language=None):
         """Add a text document to the index
 
         First the text of the document is preprocessed and then tokenized
         assuming a specific language.
 
-        Then for each token, the name of the document and the list of all the
-        line numbers where that token occurs in the document are inserted in
-        the index.
+        Then for each token, the name of the document where that token occurs
+        in the document are inserted in the index.
         """
-        for i, line in enumerate(text_content.split("\n")):
-            line_number = i + 1  # enumerate starts at 0
-            line = self.preprocess(line, language=language)
-            tokens = self.tokenize(line, language=language)
-            for token in tokens:
-                doc_entry = self._token_to_doc.setdefault(token, {})
-                line_numbers = doc_entry.setdefault(doc_name, [])
-                line_numbers.append(line_number)
+        text_content = self.preprocess(text_content, language=language)
+        tokens = self.tokenize(text_content, language=language)
+        for token in tokens:
+            document_set = self._token_to_doc.setdefault(token, set())
+            document_set.add(document_name)
 
     def index_text_file(self, filepath, language, encoding="utf-8"):
         """Index a text document stored as a file
@@ -109,16 +116,21 @@ class TextIndex:
         In the end return the list of document names for documents that contain
         all the tokens of the query at the same time (implicit conjunctive
         query with "and" operators).
+
+        The list of names is sorted by alphabetical order to get deterministic
+        outputs so as to ease testing.
         """
         query_text = self.preprocess(query_text, language=language)
         query_tokens = self.tokenize(query_text, language=language)
         result_set = None
         for token in query_tokens:
-            document_set = set(self._token_to_doc.get(token, {}).keys())
+            document_set = self._token_to_doc.get(token, set())
             if result_set is None:
                 result_set = document_set
             else:
                 result_set.intersection_update(document_set)
-            if len(result_set) == 0:
-                return []
+        if result_set is None:
+            # Query only holds tokens that are not present in indexed
+            # documents.
+            return []
         return sorted(result_set)
