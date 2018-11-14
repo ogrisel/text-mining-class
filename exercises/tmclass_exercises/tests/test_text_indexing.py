@@ -29,7 +29,25 @@ def test_preprocess_text():
     assert preprocessed == "古池や蛙飛び込む水の音"
 
 
-def test_french_tokens():
+def test_tokenize_text():
+    index = TextIndex()
+    tokens = index.tokenize("winter is coming!", language="en")
+    assert tokens == ["winter", "is", "coming"]
+
+    tokens = index.tokenize("ای باغبان", language="fa")
+    assert tokens == ["ای", "باغبان"]
+
+
+def test_index_text():
+    index = TextIndex()
+    index.index_text("doc1", "winter is coming!", language="en")
+    index.index_text("doc2", "ای باغبان", language="fa")
+
+    assert index.lookup_token("باغبان") == [('doc2', [1])]
+    assert index.lookup_token("winter") == [('doc1', [1])]
+
+
+def test_index_french_text_files():
     index = TextIndex()
     index.index_text_file(POETRY_FOLDER_PATH / 'baudelaire.txt',
                           language="fr", encoding="iso-8859-15")
@@ -67,7 +85,7 @@ def test_french_tokens():
     assert index.lookup_token("inexistant") == []
 
 
-def test_english_tokens():
+def test_index_english_text_files():
     index = TextIndex()
     index.index_text_file(POETRY_FOLDER_PATH / 'shakespeare.txt',
                           language="en", encoding="utf-8")
@@ -85,7 +103,7 @@ def test_english_tokens():
     assert results == expected_results
 
 
-def test_persian_tokens():
+def test_index_persian_text_files():
     index = TextIndex()
     index.index_text_file(POETRY_FOLDER_PATH / 'rumi.txt',
                           language="fa", encoding="utf-8")
@@ -96,7 +114,7 @@ def test_persian_tokens():
     assert results == expected_results
 
 
-def test_japanese_tokens():
+def test_index_japanese_text_files():
     pytest.importorskip("janome")  # skip this test if janome is not installed
 
     index = TextIndex()
@@ -122,5 +140,6 @@ def test_complex_queries():
     index.index_text_file(POETRY_FOLDER_PATH / 'verlaine.txt',
                           language="fr", encoding="utf-8")
 
-    assert index.query("Mon automne", language="fr") == ["verlaine.txt"]
-    assert index.query("winter bite", language="en") == ["shakespeare.txt"]
+    assert index.query("feeriques palais", language="fr") == ["baudelaire.txt"]
+    assert index.query("Féeriques palais!", language="fr") == ["baudelaire.txt"]
+    assert index.query("Winter Bite", language="en") == ["shakespeare.txt"]
