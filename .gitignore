@@ -107,7 +107,9 @@ venv.bak/
 .mypy_cache/
 
 
-# Ingored generated data files
+# Ignored generated data files
 exercises/tmclass_exercises/data/poetry_utf8
 solutions/tmclass_solutions/data/poetry_utf8
 
+# Ignore tmclass venv
+tmclass
