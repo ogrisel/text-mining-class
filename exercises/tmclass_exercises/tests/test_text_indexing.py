@@ -117,9 +117,9 @@ def test_complex_queries():
                           language="fr", encoding="utf-8")
 
     assert index.query("feeriques palais", language="fr") == ["baudelaire.txt"]
-    assert index.query("Féeriques palais!", language="fr") == ["baudelaire.txt"]
+    assert index.query("Féeriques palais", language="fr") == ["baudelaire.txt"]
 
-    assert index.query("Winter Bite", language="en") == ["shakespeare.txt"]
+    assert index.query("Winter Bite!", language="en") == ["shakespeare.txt"]
     assert index.query("水の音", language="ja") == ["basho.txt"]
 
     assert index.query("unexistingtoken", language="en") == []
