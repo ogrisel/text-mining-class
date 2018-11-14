@@ -19,7 +19,7 @@ class TextIndex:
     The methods named `index_text` and `index_text_file` can process text
     documents to index them into that data-structure.
 
-    The method `lookup_token` retrieves the list of the names of documents
+    The method `lookup_token` retrieves the set of the names of documents
     containing that token.
 
     The method `query` implements document retrieval for text queries that can
