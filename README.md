@@ -17,14 +17,12 @@ List of topics to be covered in this class:
 - Sequence to Sequence for machine translation
 - Machine Reading
 
-
 ## Getting started
 
 ### Install git and clone this repository
 
 Install [git](https://git-scm.com/), clone this repository and change the working
 directory to the newly created folder:
-
 
     git clone https://github.com/ogrisel/text-mining-class
     cd text-mining-class/
@@ -36,11 +34,9 @@ repository:
     git remote add myname https://github.com/myname/text-mining-class 
     git remote -v
 
-
 You should see 2 remote repo: one named "origin" and pointing to
 `ogrisel/text-mining-class.git` and the other with your github name and
 pointing to your own github fork.
-
 
 ### Install Python and the dependencies
 
@@ -79,7 +75,7 @@ Then install the project dependencies in a dedicated conda environment named
 `tmclass` (see the content of the `environment.yml` file for details:
 
     conda env create -f environment.yml
-    
+
 Then [activate](https://conda.io/docs/user-guide/tasks/manage-environments.html#activating-an-environment) the `tmclass` conda environment:
 
 Under Windows:
@@ -129,7 +125,6 @@ Configure you editor to run the tests with `pytest`: TODO
 
 ## Doing an exercise
 
-
 Open the `text-mining-class` folder in your editor. The exercises can be found
 in the `exercises/tmclass_exercises/` folder.
 
@@ -153,12 +148,9 @@ exercises as follows:
 
     pytest -vv exercises/tmclass_exercises/tests/test_text_manipulation.py
 
-
 ## Exercises overview
 
-
 TODO:
-
 
 ## Installing with pip / virtualenv instead of conda
 
@@ -178,5 +170,3 @@ or under Linux and macOS:
 Finally, install the dependencies:
 
     python3 -m pip install -r requirements.txt
-
-
