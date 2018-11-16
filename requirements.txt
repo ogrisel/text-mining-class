@@ -1,5 +1,6 @@
 jupyterlab
 lxml
+cssselect
 matplotlib
 scikit-learn
 gensim

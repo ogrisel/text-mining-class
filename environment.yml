@@ -2,6 +2,7 @@ name: tmclass
 dependencies:
   - pip
   - lxml
+  - cssselect
   - jupyterlab
   - matplotlib
   - scikit-learn
