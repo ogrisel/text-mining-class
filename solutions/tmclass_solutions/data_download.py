@@ -11,15 +11,15 @@ WPL_URL = ("https://github.com/ogrisel/text-mining-class/releases/download/"
 
 
 def download_wikipedia_scraping_result(output_folder=DATA_FOLDER_PATH):
-    scraping_folder = output_folder / "wikipedia_scraping"
-    if scraping_folder.exists():
-        print(f"{str(scraping_folder)} already exists.")
-        return
-
     archive_filepath = output_folder / WPS_URL.rsplit("/", 1)[1]
     if not archive_filepath.exists():
         print(f"Downloading {WPS_URL} to {str(archive_filepath)}...")
         urlretrieve(WPS_URL, archive_filepath)
+
+    scraping_folder = output_folder / "wikipedia_scraping"
+    if scraping_folder.exists():
+        print(f"{str(scraping_folder)} already exists.")
+        return
 
     print(f"Extracting {str(archive_filepath)} to {str(output_folder)}...")
     with tarfile.open(archive_filepath) as tf:
