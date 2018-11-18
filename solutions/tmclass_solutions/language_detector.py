@@ -27,7 +27,9 @@ def make_language_detector_dataset(html_filepaths, min_length=30):
     for html_filepath in html_filepaths:
         language_label = wikipedia_language(html_filepath)
         article_name = html_filepath.parent.name
-        text = WikipediaArticle(html_filepath.read_text()).get_main_text()
+        article = WikipediaArticle(html_filepath.read_bytes(),
+                                   encoding="utf-8")
+        text = article.get_main_text()
         for short_text in split_paragraphs(text, min_length):
             texts.append(short_text)
             language_labels.append(language_label)
