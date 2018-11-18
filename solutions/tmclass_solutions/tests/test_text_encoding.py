@@ -56,6 +56,8 @@ def test_count_bytes_in_files():
 
 
 def test_text_in_files():
+    # English letters without accents are encoded exactly the same way in
+    # many encoding / charsets, ascii being the common subset:
     text = "winter"
     filepath = POETRY_FOLDER_PATH / 'shakespeare.txt'
     assert text_in_file(text, filepath, encoding="ascii")
@@ -69,6 +71,7 @@ def test_text_in_files():
     text = "古池や蛙飛び込む水の音"
     filepath = POETRY_FOLDER_PATH / 'basho.txt'
     assert text_in_file(text, filepath, encoding="shift-jis")
+    assert not text_in_file(text, filepath, encoding="iso-8859-15")
 
 
 def test_convert_files_to_utf8():
@@ -83,9 +86,11 @@ def test_convert_files_to_utf8():
 
     for entry in source_metadata:
         filename = entry["filename"]
+        source_encoding = entry["encoding"]
+
         source_filepath = POETRY_FOLDER_PATH / filename
         target_filepath = output_path / filename
-        source_encoding = entry["encoding"]
+
         convert_text_file(source_filepath, source_encoding,
                           target_filepath, target_encoding="utf-8")
 
