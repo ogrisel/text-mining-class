@@ -68,9 +68,13 @@ def test_split_paragraph_100():
     assert len(paragraphs) == 0
 
     paragraphs = split_paragraphs(MULTI_PARAGRAPH_DOCUMENT, min_length=100)
-    assert len(paragraphs) == 1
-    assert paragraphs[0].startswith("And here is the second paragraph.")
+    assert len(paragraphs) == 2
+
+    assert paragraphs[0].startswith("This is the first paragraph.")
     assert paragraphs[0].endswith("first\nparagraph in the document.")
+
+    assert paragraphs[1].startswith("And here is the second paragraph.")
+    assert paragraphs[1].endswith("very\nrepetitive.")
 
 
 def test_language_detector_dataset():
@@ -79,7 +83,7 @@ def test_language_detector_dataset():
     texts, language_labels, article_names = make_language_detector_dataset(
         html_filepaths, min_length=30)
 
-    assert len(texts) == len(language_labels)
+    assert len(texts) == len(language_labels) == len(article_names)
     assert len(texts) >= 10000
 
     text_lengths = [len(text) for text in texts]
@@ -92,8 +96,12 @@ def test_language_detector_dataset():
     assert article_names[-1] == "音乐"
     assert language_labels[-1] == "zh"
 
-    # Check that all the classes are well represented
+    # Check that our 29 different languages are represented
     label_counts = Counter(language_labels)
+    assert len(label_counts) == 29
+
+    # Check that all the classes are well represented and none is overly
+    # represented.
     for label, count in label_counts.items():
         assert count >= 100, label
         assert count <= 1500, label
