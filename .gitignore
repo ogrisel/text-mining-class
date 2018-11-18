@@ -113,5 +113,8 @@ solutions/tmclass_solutions/data/poetry_utf8
 exercises/tmclass_exercises/data/wikipedia_scraping
 solutions/tmclass_solutions/data/wikipedia_scraping
 
+wikipedia_scraping.tar.xz
+wikipedia_language.parquet
+
 # Ignore tmclass venv
 tmclass

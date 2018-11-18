@@ -1,4 +1,5 @@
 jupyterlab
+ipython
 lxml
 cssselect
 matplotlib
@@ -6,6 +7,7 @@ scikit-learn
 gensim
 spacy
 pandas
+pyarrow
 pytest
 flake8
 

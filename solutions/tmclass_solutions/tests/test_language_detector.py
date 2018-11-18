@@ -1,9 +1,12 @@
 from collections import Counter
 import pytest
+import pandas as pd
+
 from tmclass_solutions.language_detector import wikipedia_language
 from tmclass_solutions.language_detector import split_paragraphs
 from tmclass_solutions.language_detector import make_language_detector_dataset
-from tmclass_solutions.utils import download_wikipedia_scraping_result
+from tmclass_solutions.data_download import download_wikipedia_scraping_result
+from tmclass_solutions.data_download import download_wikipedia_language_dataset
 from tmclass_solutions import DATA_FOLDER_PATH
 
 WIKIPEDIA_SCRAPING_ROOT = DATA_FOLDER_PATH / "wikipedia_scraping"
@@ -11,8 +14,8 @@ WIKIPEDIA_SCRAPING_ROOT = DATA_FOLDER_PATH / "wikipedia_scraping"
 
 def setup():
     """Download the tests files if needed."""
-    if not WIKIPEDIA_SCRAPING_ROOT.exists():
-        download_wikipedia_scraping_result()
+    download_wikipedia_scraping_result()
+    download_wikipedia_language_dataset()
 
 
 def test_wikipedia_language():
@@ -66,19 +69,17 @@ def test_split_paragraph_30():
 def test_split_paragraph_100():
     paragraphs = split_paragraphs(SHORT_DOCUMENT, min_length=100)
     assert len(paragraphs) == 0
-
     paragraphs = split_paragraphs(MULTI_PARAGRAPH_DOCUMENT, min_length=100)
     assert len(paragraphs) == 2
-
     assert paragraphs[0].startswith("This is the first paragraph.")
     assert paragraphs[0].endswith("first\nparagraph in the document.")
-
     assert paragraphs[1].startswith("And here is the second paragraph.")
     assert paragraphs[1].endswith("very\nrepetitive.")
 
 
 def test_language_detector_dataset():
-    html_filepaths = sorted(WIKIPEDIA_SCRAPING_ROOT.glob("**/body"))
+    html_filepaths = list(WIKIPEDIA_SCRAPING_ROOT.glob("**/body"))
+    html_filepaths = sorted(html_filepaths)
 
     texts, language_labels, article_names = make_language_detector_dataset(
         html_filepaths, min_length=30)
@@ -109,3 +110,15 @@ def test_language_detector_dataset():
     label, count = label_counts.most_common(n=1)[0]
     assert label == "fr"
     assert count >= 1000
+
+    # Convert the resulting python lists to the columns of a pandas dataframe
+    # so as to save the resulting dataset as a parquet file which is a very
+    # efficient and fast way to store heterogeneously typed tabulare data
+    # sets.
+
+    # dataset = pd.DataFrame({
+    #     "article_name": article_names,
+    #     "language": language_labels,
+    #     "text": texts,
+    # })
+    # dataset.to_parquet(DATA_FOLDER_PATH / "wikipedia_language.parquet")

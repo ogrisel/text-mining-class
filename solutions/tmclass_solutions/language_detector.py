@@ -22,7 +22,6 @@ def split_paragraphs(text, min_length=30):
 
 
 def make_language_detector_dataset(html_filepaths, min_length=30):
-
     texts, language_labels, article_names = [], [], []
     for html_filepath in html_filepaths:
         language_label = wikipedia_language(html_filepath)

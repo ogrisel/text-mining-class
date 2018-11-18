@@ -1,11 +1,13 @@
 import tarfile
 from urllib.request import urlretrieve
-from pathlib import Path
-from tmclass_solutions import DATA_FOLDER_PATH
+from tmclass_exercises import DATA_FOLDER_PATH
 
 
 WPS_URL = ("https://github.com/ogrisel/text-mining-class/releases/download/"
            "wikipedia_scraping/wikipedia_scraping.tar.xz")
+
+WPL_URL = ("https://github.com/ogrisel/text-mining-class/releases/download/"
+           "wikipedia_language/wikipedia_language.parquet")
 
 
 def download_wikipedia_scraping_result(output_folder=DATA_FOLDER_PATH):
@@ -14,7 +16,7 @@ def download_wikipedia_scraping_result(output_folder=DATA_FOLDER_PATH):
         print(f"{str(scraping_folder)} already exists.")
         return
 
-    archive_filepath = Path(WPS_URL.rsplit("/", 1)[1])
+    archive_filepath = output_folder / WPS_URL.rsplit("/", 1)[1]
     if not archive_filepath.exists():
         print(f"Downloading {WPS_URL} to {str(archive_filepath)}...")
         urlretrieve(WPS_URL, archive_filepath)
@@ -23,9 +25,18 @@ def download_wikipedia_scraping_result(output_folder=DATA_FOLDER_PATH):
     with tarfile.open(archive_filepath) as tf:
         tf.extractall(output_folder)
 
-    print(f"Deleting {str(archive_filepath)}")
-    archive_filepath.unlink()
+
+def download_wikipedia_language_dataset(output_folder=DATA_FOLDER_PATH):
+    dataset_path = output_folder / "wikipedia_language.parquet"
+    if dataset_path.exists():
+        print(f"{str(dataset_path)} already exists.")
+        return
+
+    print(f"Downloading {WPL_URL} to {str(dataset_path)}...")
+    urlretrieve(WPL_URL, dataset_path)
+    print("done.")
 
 
 if __name__ == "__main__":
     download_wikipedia_scraping_result()
+    download_wikipedia_language_dataset()

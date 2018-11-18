@@ -3,12 +3,14 @@ dependencies:
   - pip
   - lxml
   - cssselect
+  - ipython
   - jupyterlab
   - matplotlib
   - scikit-learn
-  - gensim
-  - spacy
   - pandas
+  - pyarrow
   - pytest
   - flake8
+  - gensim
+  - spacy
 

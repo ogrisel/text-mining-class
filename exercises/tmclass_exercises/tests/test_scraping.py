@@ -2,7 +2,7 @@ import json
 from urllib.parse import quote
 from tmclass_exercises.scraping import SimpleWebScraper
 from tmclass_exercises.scraping import WikipediaArticle
-from tmclass_exercises.utils import download_wikipedia_scraping_result
+from tmclass_exercises.data_download import download_wikipedia_scraping_result
 
 from tmclass_exercises import DATA_FOLDER_PATH as ROOT
 
