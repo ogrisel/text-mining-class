@@ -8,7 +8,7 @@ WPS_URL = ("https://github.com/ogrisel/text-mining-class/releases/download/"
            "wikipedia_scraping/wikipedia_scraping.tar.xz")
 
 
-def download_wikipedia_scraping(output_folder=DATA_FOLDER_PATH):
+def download_wikipedia_scraping_result(output_folder=DATA_FOLDER_PATH):
     scraping_folder = output_folder / "wikipedia_scraping"
     if scraping_folder.exists():
         print(f"{str(scraping_folder)} already exists.")
@@ -28,4 +28,4 @@ def download_wikipedia_scraping(output_folder=DATA_FOLDER_PATH):
 
 
 if __name__ == "__main__":
-    download_wikipedia_scraping()
+    download_wikipedia_scraping_result()

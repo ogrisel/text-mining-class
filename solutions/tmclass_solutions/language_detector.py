@@ -5,41 +5,31 @@ Wikipedia articles to be able to train a machine learning model to classify the
 language of a piece of text.
 
 """
+from pathlib import Path
 from tmclass_solutions.scraping import WikipediaArticle
-from tmclass_solutions.scraping import SimpleWebScraper
 
 
-def split_paragraphs(text, minimum_length=30):
-    return [text]
+def wikipedia_language(filepath):
+    for part in Path(filepath).parts:
+        if part.endswith(".wikipedia.org"):
+            return part.split(".")[0]
+    raise ValueError(f"{str(filepath)} has no Wikipedia language information")
 
 
-def scrape_wikipedia_texts(output_folder_path, english_seed_articles,
-                           follow_lang_links=False):
-    english_folder = output_folder_path / "en"
-    if not english_folder.exists():
-        english_folder.mkdir()
-
-    to_scrape = []
-
-    scraper = SimpleWebScraper()
-    for article_name in english_seed_articles:
-        article_path = english_folder / article_name
-        if article_name.exists():
-            raw_content = article_path.read_bytes()
-        else:
-            article_url = BASE_URL_EN + article_name
-            if scraper.can_fetch(article_url):
-                headers, raw_content = scraper.fetch(article_url)
-                # TODO: we could check the headers to check that it's UTF-8
-                # and if not decode and re-encode the HTML payload in UTF-8.
-                article_path.write_bytes(raw_content)
-
-        article = WikipediaArticle(raw_content, encoding="utf-8")
-        for language, new_article_url in article.get_language_links().items():
-            to_scrape.append(new_article_url)
-
-    # TODO: scrape the collected urls
+def split_paragraphs(text, min_length=30):
+    paragraphs = text.split("\n\n")
+    return [p.strip() for p in paragraphs if len(p.strip()) >= min_length]
 
 
-class WikipediaLanguageDataset:
-    pass
+def make_language_detector_dataset(html_filepaths, min_length=30):
+
+    texts, language_labels, article_names = [], [], []
+    for html_filepath in html_filepaths:
+        language_label = wikipedia_language(html_filepath)
+        article_name = html_filepath.parent.name
+        text = WikipediaArticle(html_filepath.read_text()).get_main_text()
+        for short_text in split_paragraphs(text, min_length):
+            texts.append(short_text)
+            language_labels.append(language_label)
+            article_names.append(article_name)
+    return texts, language_labels, article_names

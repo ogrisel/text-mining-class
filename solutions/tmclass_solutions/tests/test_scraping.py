@@ -2,7 +2,7 @@ import json
 from urllib.parse import quote
 from tmclass_solutions.scraping import SimpleWebScraper
 from tmclass_solutions.scraping import WikipediaArticle
-from tmclass_solutions.utils import download_wikipedia_scraping
+from tmclass_solutions.utils import download_wikipedia_scraping_result
 
 from tmclass_solutions import DATA_FOLDER_PATH as ROOT
 
@@ -12,7 +12,7 @@ EN_WIKIPEDIA_PATH = ROOT / "wikipedia_scraping" / "en.wikipedia.org" / "wiki"
 def setup():
     """Download the tests files if needed."""
     if not EN_WIKIPEDIA_PATH.exists():
-        download_wikipedia_scraping()
+        download_wikipedia_scraping_result()
 
 
 def test_extract_text_from_html_wikipedia_page():
