@@ -45,9 +45,14 @@ def test_text_in_bytes():
 
 
 def test_count_bytes_in_files():
-    assert count_bytes_in_file(POETRY_FOLDER_PATH / 'basho.txt') == 81
-    assert count_bytes_in_file(POETRY_FOLDER_PATH / 'baudelaire.txt') == 1194
-    assert count_bytes_in_file(POETRY_FOLDER_PATH / 'shakespeare.txt') == 655
+    basho = POETRY_FOLDER_PATH / 'basho.txt'
+    assert count_bytes_in_file(basho) == basho.stat().st_size
+
+    baudelaire = POETRY_FOLDER_PATH / 'baudelaire.txt'
+    assert count_bytes_in_file(baudelaire) == baudelaire.stat().st_size
+
+    shakespeare = POETRY_FOLDER_PATH / 'shakespeare.txt'
+    assert count_bytes_in_file(shakespeare) == shakespeare.stat().st_size
 
 
 def test_text_in_files():
