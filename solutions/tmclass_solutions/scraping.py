@@ -1,8 +1,15 @@
 from lxml.html import document_fromstring
-from urllib.parse import urlparse
+from lxml.etree import strip_elements
+from urllib.parse import urlparse, unquote
 from urllib.robotparser import RobotFileParser
 from urllib.request import urlopen, Request
 from time import time, sleep
+from pathlib import Path
+import json
+
+
+class DisallowedFetchError(Exception):
+    pass
 
 
 class WikipediaArticle:
@@ -21,44 +28,73 @@ class WikipediaArticle:
         if isinstance(html_content, bytes):
             html_content = html_content.decode(encoding)
         self.document = document_fromstring(html_content)
+        strip_elements(self.document, "style")
 
     def get_language_links(self):
         link_tags = self.document.cssselect("a.interlanguage-link-target")
-        link_tags.sort(key=lambda t: t.attrib['lang'])
-        return {tag.attrib['lang']: tag.attrib['href'] for tag in link_tags}
+        return sorted([tag.attrib['href'] for tag in link_tags])
 
     def get_main_text(self):
-        p_tags = self.document.cssselect("#mw-content-text p")
+        p_tags = self.document.cssselect(".mw-parser-output > p")
         return "\n".join(tag.text_content() for tag in p_tags).strip()
 
 
-class WebScraper:
+class SimpleWebScraper:
     user_agent = "Text Mining Class / WebScraper"
     fetch_interval = 0.1  # 10 requests / second max
 
-    def __init__(self):
+    def __init__(self, output_folder=None):
         self.robot_file_parsers = {}
         self.last_fetch_time = 0
+        if output_folder is not None:
+            self.output_folder = Path(output_folder)
+
+    def get_robot_url(self, url):
+        parsed_url = urlparse(url)
+        return f"{parsed_url.scheme}://{parsed_url.hostname}/robots.txt"
 
     def can_fetch(self, url):
-        u = urlparse(url)
-        rfp = self.robot_file_parsers.get(u.hostname)
+        parsed_url = urlparse(url)
+        # Fetching and parsing the robots.txt file can be expensive in it-self.
+        # Let's cache the RobotFileParser instances, one per host, on the
+        # scraper itself to reuse them for consecutive queries.
+        rfp = self.robot_file_parsers.get(parsed_url.hostname)
         if rfp is None:
-            robots_url = f"{u.scheme}://{u.hostname}/robots.txt"
-            rfp = RobotFileParser(robots_url)
+            rfp = RobotFileParser(self.get_robot_url(url))
             rfp.read()
-            self.robot_file_parsers[u.hostname] = rfp
-        return rfp.can_fetch(self.user_agent, u.path)
+            self.robot_file_parsers[parsed_url.hostname] = rfp
+        return rfp.can_fetch(self.user_agent, parsed_url.path)
 
     def fetch(self, url):
         if not self.can_fetch(url):
-            return None
+            return DisallowedFetchError(
+                f"robots.txt does not allow fetching {url}")
         since_last_fetch = time() - self.last_fetch_time
         if since_last_fetch < self.fetch_interval:
-            # Avoid hammering Wikipedia too much
+            # Avoid hammering Wikipedia too frequently
             sleep(self.fetch_interval - since_last_fetch)
 
         self.last_fetch_time = time()
         request = Request(url, headers={'User-Agent': self.user_agent})
         response = urlopen(request)
         return dict(response.headers), response.read()
+
+    def fetch_and_save(self, url):
+        parsed_url = urlparse(url)
+
+        final_path = unquote(parsed_url.path[1:])
+        folder = self.output_folder / parsed_url.hostname / final_path
+        if not folder.exists():
+            # Create the folder and store the result of the call to the fetch
+            # method there.
+            folder.mkdir(parents=True)
+            headers, body = self.fetch(url)
+
+            body_path = folder / "body"
+            body_path.write_bytes(body)
+
+            headers_path = folder / "headers.json"
+            with open(headers_path, mode='w') as f:
+                json.dump(headers, f)
+
+        return folder

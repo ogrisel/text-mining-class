@@ -6,10 +6,11 @@ language of a piece of text.
 
 """
 from tmclass_solutions.scraping import WikipediaArticle
-from tmclass_colutions.scraping import WebScaper
+from tmclass_solutions.scraping import SimpleWebScraper
 
 
-BASE_URL_EN = "https://en.wikipedia.org/wiki/"
+def split_paragraphs(text, minimum_length=30):
+    return [text]
 
 
 def scrape_wikipedia_texts(output_folder_path, english_seed_articles,
@@ -19,7 +20,8 @@ def scrape_wikipedia_texts(output_folder_path, english_seed_articles,
         english_folder.mkdir()
 
     to_scrape = []
-    scraper = WebScaper()
+
+    scraper = SimpleWebScraper()
     for article_name in english_seed_articles:
         article_path = english_folder / article_name
         if article_name.exists():
@@ -37,3 +39,7 @@ def scrape_wikipedia_texts(output_folder_path, english_seed_articles,
             to_scrape.append(new_article_url)
 
     # TODO: scrape the collected urls
+
+
+class WikipediaLanguageDataset:
+    pass

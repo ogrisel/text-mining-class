@@ -1,29 +1,7 @@
 from tmclass_solutions.language_detector import split_paragraphs
-from tmclass_solutions.language_detector import WikipediaDataset
-from tmclass_solutions.language_detector import scrape_wikipedia_texts
+from tmclass_solutions.language_detector import WikipediaLanguageDataset
 from tmclass_solutions import DATA_FOLDER_PATH
-
-
-def test_scrape_language_dataset():
-    output_folder = DATA_FOLDER_PATH / "wikipedia_scraping_output"
-    if output_folder.exists():
-        # Delete the output of a previous run. We do not delete the folder
-        # at the end of the test to make it easy to do manual introspection
-        # of the results of the test for pedagogical purpose.
-        output_folder.rmdir()
-
-    english_seed_articles = [
-        "Agriculture", "Architecture", "Art", "Biology", "Business",
-        "Cinematography", "Culture", "Economy", "Literature", "Music", "Politics",
-        "Religion", "Sport", "Science", "Technology", "Trade"
-    ]
-    scrape_wikipedia_dataset(output_folder, english_seed_articles,
-                             follow_lang_links=False)
-
-    assert output_folder.ls() == ['en']
-
-    scrape_wikipedia_dataset(output_folder, english_seed_articles,
-                             follow_lang_links=True)
+from collections import Counter
 
 
 MULTI_PARAGRAPH_DOCUMENT = """\
@@ -73,9 +51,13 @@ def test_split_paragraph_100():
 
 
 def test_prepare_dataset():
-    dataset = WikipediaDataset(DATA_FOLDER_PATH / "wikipedia_text")
+    dataset = WikipediaLanguageDataset(DATA_FOLDER_PATH / "wikipedia_text")
 
-    dataset.text_and_labels(min_paragraph,
-                             min_samples_per_class=100)
+    texts, labels = dataset.text_and_labels(
+        paragraph_minimum_length=30,
+        min_samples_per_class=100,
+        max_samples_per_class=1000)
 
+    label_counts = Counter(labels)
+    label_counts.most_common()
 

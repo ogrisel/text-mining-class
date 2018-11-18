@@ -110,6 +110,8 @@ venv.bak/
 # Ignored generated data files
 exercises/tmclass_exercises/data/poetry_utf8
 solutions/tmclass_solutions/data/poetry_utf8
+exercises/tmclass_exercises/data/wikipedia_scraping
+solutions/tmclass_solutions/data/wikipedia_scraping
 
 # Ignore tmclass venv
 tmclass
