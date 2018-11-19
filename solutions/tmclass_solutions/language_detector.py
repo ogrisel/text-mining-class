@@ -3,9 +3,14 @@
 This modules contains functions to extract multi-lingual text documents from
 Wikipedia articles to be able to train a machine learning model to classify the
 language of a piece of text.
-
 """
 from pathlib import Path
+
+import numpy as np
+from sklearn.pipeline import make_pipeline
+from sklearn.linear_model import SGDClassifier
+from sklearn.feature_extraction.text import HashingVectorizer
+
 from tmclass_solutions.scraping import WikipediaArticle
 
 
@@ -34,3 +39,14 @@ def make_language_detector_dataset(html_filepaths, min_length=30):
             language_labels.append(language_label)
             article_names.append(article_name)
     return texts, language_labels, article_names
+
+
+def build_language_detector(texts, labels):
+    text_classifier = make_pipeline(
+        HashingVectorizer(analyzer="char", ngram_range=(1, 3),
+                          norm="l2", dtype=np.float32),
+        SGDClassifier(early_stopping=True, validation_fraction=0.2,
+                      n_iter_no_change=3, max_iter=1000, tol=1e-3,
+                      alpha=1e-5, penalty="elasticnet", random_state=0)
+    )
+    return text_classifier.fit(texts, labels)

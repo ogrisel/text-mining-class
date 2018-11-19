@@ -1,17 +1,13 @@
 from collections import Counter
 import pytest
-import numpy as np
 from numpy.testing import assert_array_equal
 import pandas as pd
-
 from sklearn.model_selection import train_test_split
-from sklearn.pipeline import make_pipeline
-from sklearn.linear_model import SGDClassifier
-from sklearn.feature_extraction.text import HashingVectorizer
 
 from tmclass_solutions.language_detector import wikipedia_language
 from tmclass_solutions.language_detector import split_paragraphs
 from tmclass_solutions.language_detector import make_language_detector_dataset
+from tmclass_solutions.language_detector import build_language_detector
 from tmclass_solutions.data_download import download_wikipedia_scraping_result
 from tmclass_solutions.data_download import download_wikipedia_language_dataset
 from tmclass_solutions import DATA_FOLDER_PATH
@@ -126,7 +122,7 @@ def test_language_detector_dataset():
     # dataset.to_parquet(DATA_FOLDER_PATH / "wikipedia_language.parquet")
 
 
-def test_build_model():
+def test_build_language_detector():
     # Make sure that the language dataset is ready
     download_wikipedia_language_dataset()
 
@@ -134,14 +130,8 @@ def test_build_model():
     df_train, df_test = train_test_split(
         df, train_size=int(1e3), test_size=int(1e3), random_state=0)
 
-    text_classifier = make_pipeline(
-        HashingVectorizer(analyzer="char", ngram_range=(1, 3),
-                          norm="l2", dtype=np.float32),
-        SGDClassifier(early_stopping=True, validation_fraction=0.2,
-                      n_iter_no_change=3, max_iter=1000, tol=1e-3,
-                      alpha=1e-5, penalty="elasticnet", random_state=0)
-    )
-    text_classifier.fit(df_train["text"], df_train["language"])
+    text_classifier = build_language_detector(
+        df_train["text"], df_train["language"])
 
     train_acc = text_classifier.score(df_train["text"], df_train["language"])
     assert train_acc > 0.9
