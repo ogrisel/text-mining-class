@@ -115,6 +115,7 @@ solutions/tmclass_solutions/data/wikipedia_scraping
 
 wikipedia_scraping.tar.xz
 wikipedia_language.parquet
+language_classifier.pkl.gz
 
 # Ignore tmclass venv
 tmclass

@@ -3,6 +3,7 @@ dependencies:
   - pip
   - lxml
   - cssselect
+  - selenium
   - ipython
   - jupyterlab
   - matplotlib

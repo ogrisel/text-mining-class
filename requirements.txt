@@ -2,6 +2,7 @@ jupyterlab
 ipython
 lxml
 cssselect
+selenium
 matplotlib
 scikit-learn
 gensim

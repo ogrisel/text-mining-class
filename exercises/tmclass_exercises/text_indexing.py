@@ -1,3 +1,6 @@
+from tmclass_exercises.language_detector import LanguageDetector
+
+
 class TextIndex:
     """Simplistic in-memory full-text index
 
@@ -25,6 +28,7 @@ class TextIndex:
         # Initialize an empty Python dictionary to map text token to the the
         # names of document that contains that token.
         self._token_to_doc = {}
+        self._language_detector = LanguageDetector()
 
     def __len__(self):
         """Return the total number of indexed documents
@@ -47,10 +51,8 @@ class TextIndex:
     def preprocess(self, text, language=None):
         """Apply language specific preprocessing
 
-        For western / latin language, convert all the letters to lower case.
-
-        For French language, replace accentuated characters by their
-        non-accentuated counterparts.
+        For western / latin language, convert all the letters to lower case and
+        replace accentuated characters by their non-accentuated counterparts.
 
         This preprocessing is applied both on the text content of a document to
         index and to any text query prior to tokenization.

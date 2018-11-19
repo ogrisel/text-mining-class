@@ -7,11 +7,18 @@ language of a piece of text.
 from pathlib import Path
 
 import numpy as np
+from gzip import GzipFile
+import pickle
+
 from sklearn.pipeline import make_pipeline
 from sklearn.linear_model import SGDClassifier
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 from tmclass_solutions.scraping import WikipediaArticle
+from tmclass_solutions import MODEL_FOLDER_PATH
+
+
+LANGUAGE_CLASSIFIER_PATH = MODEL_FOLDER_PATH / "language_classifier.pkl.gz"
 
 
 def wikipedia_language(filepath):
@@ -41,8 +48,8 @@ def make_language_detector_dataset(html_filepaths, min_length=30):
     return texts, language_labels, article_names
 
 
-def build_language_detector(texts, labels, random_state=None):
-    language_detector = make_pipeline(
+def build_language_classifier(texts, labels, random_state=None):
+    language_classifier = make_pipeline(
         TfidfVectorizer(analyzer="char", ngram_range=(1, 3),
                         min_df=2, max_df=0.9, norm="l2", dtype=np.float32),
         SGDClassifier(early_stopping=True, validation_fraction=0.2,
@@ -50,4 +57,20 @@ def build_language_detector(texts, labels, random_state=None):
                       alpha=1e-5, penalty="l2",
                       random_state=random_state)
     )
-    return language_detector.fit(texts, labels)
+    return language_classifier.fit(texts, labels)
+
+
+class LanguageDetector:
+
+    def __init__(self, model=LANGUAGE_CLASSIFIER_PATH):
+        if isinstance(model, Path):
+            opener = GzipFile if model.name.endswith(".gz") else open
+            with opener(model, 'rb') as f:
+                model = pickle.load(f)
+        self.model = model
+
+    def __call__(self, text):
+        if text == "":
+            # Do not trust the bias of the model for such an extreme case.
+            return None
+        return self.model.predict([text])[0]
