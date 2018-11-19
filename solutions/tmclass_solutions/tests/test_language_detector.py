@@ -126,29 +126,30 @@ def test_build_language_detector():
     # Make sure that the language dataset is ready
     download_wikipedia_language_dataset()
 
+    # Subsample the training set to make the test run fast enough.
     df = pd.read_parquet(DATA_FOLDER_PATH / "wikipedia_language.parquet")
     df_train, df_test = train_test_split(
         df, train_size=int(1e3), test_size=int(1e3), random_state=0)
 
     text_classifier = build_language_detector(
-        df_train["text"], df_train["language"])
+        df_train["text"], df_train["language"],
+        random_state=0)
 
     train_acc = text_classifier.score(df_train["text"], df_train["language"])
-    assert train_acc > 0.9
-
     test_acc = text_classifier.score(df_test["text"], df_test["language"])
-    assert test_acc > 0.9
+    assert train_acc > 0.97 and test_acc > 0.95
 
     short_texts = [
         "Do you understand the instructions?",
         "¿Entiendes las instrucciones?",
+        "Coneixes les instruccions?",
         "Comprenez-vous les instructions?",
         "Hai capito le istruzioni?",
         "Verstehst du die Anweisungen?",
     ]
     assert_array_equal(
         text_classifier.predict(short_texts),
-        ["en", "es", "fr", "it", "de"],
+        ["en", "es", "ca", "fr", "it", "de"],
     )
 
     poetry_folder = DATA_FOLDER_PATH / "poetry"
