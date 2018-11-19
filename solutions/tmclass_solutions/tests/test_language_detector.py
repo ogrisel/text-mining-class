@@ -16,14 +16,6 @@ from tmclass_solutions.data_download import download_wikipedia_scraping_result
 from tmclass_solutions.data_download import download_wikipedia_language_dataset
 from tmclass_solutions import DATA_FOLDER_PATH
 
-WIKIPEDIA_SCRAPING_ROOT = DATA_FOLDER_PATH / "wikipedia_scraping"
-
-
-def setup():
-    """Download the tests files if needed."""
-    download_wikipedia_scraping_result()
-    download_wikipedia_language_dataset()
-
 
 def test_wikipedia_language():
     assert wikipedia_language("/path/to/it.wikipedia.org/wiki/Roma") == "it"
@@ -85,8 +77,11 @@ def test_split_paragraph_100():
 
 
 def test_language_detector_dataset():
-    html_filepaths = list(WIKIPEDIA_SCRAPING_ROOT.glob("**/body"))
-    html_filepaths = sorted(html_filepaths)
+    # Make sure that the pre-scraped dataset is available
+    download_wikipedia_scraping_result()
+
+    scraping_folder = DATA_FOLDER_PATH / "wikipedia_scraping"
+    html_filepaths = sorted(scraping_folder.glob("**/body"))
 
     texts, language_labels, article_names = make_language_detector_dataset(
         html_filepaths, min_length=30)
@@ -132,13 +127,16 @@ def test_language_detector_dataset():
 
 
 def test_build_model():
+    # Make sure that the language dataset is ready
+    download_wikipedia_language_dataset()
+
     df = pd.read_parquet(DATA_FOLDER_PATH / "wikipedia_language.parquet")
     df_train, df_test = train_test_split(
         df, train_size=int(1e3), test_size=int(1e3), random_state=0)
 
     text_classifier = make_pipeline(
         HashingVectorizer(analyzer="char", ngram_range=(1, 3),
-                          norm='l2', dtype=np.float32),
+                          norm="l2", dtype=np.float32),
         SGDClassifier(early_stopping=True, validation_fraction=0.2,
                       n_iter_no_change=3, max_iter=1000, tol=1e-3,
                       alpha=1e-5, penalty="elasticnet", random_state=0)
@@ -150,6 +148,18 @@ def test_build_model():
 
     test_acc = text_classifier.score(df_test["text"], df_test["language"])
     assert test_acc > 0.9
+
+    short_texts = [
+        "Do you understand the instructions?",
+        "¿Entiendes las instrucciones?",
+        "Comprenez-vous les instructions?",
+        "Hai capito le istruzioni?",
+        "Verstehst du die Anweisungen?",
+    ]
+    assert_array_equal(
+        text_classifier.predict(short_texts),
+        ["en", "es", "fr", "it", "de"],
+    )
 
     poetry_folder = DATA_FOLDER_PATH / "poetry"
     basho = (poetry_folder / "basho.txt").read_text("shift-jis")

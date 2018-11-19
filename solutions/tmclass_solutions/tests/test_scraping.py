@@ -9,13 +9,9 @@ from tmclass_solutions import DATA_FOLDER_PATH as ROOT
 EN_WIKIPEDIA_PATH = ROOT / "wikipedia_scraping" / "en.wikipedia.org" / "wiki"
 
 
-def setup():
-    """Download the tests files if needed."""
-    if not EN_WIKIPEDIA_PATH.exists():
-        download_wikipedia_scraping_result()
-
-
 def test_extract_text_from_html_wikipedia_page():
+    download_wikipedia_scraping_result()
+
     culture_path = EN_WIKIPEDIA_PATH / "Culture" / "body"
     culture_page = WikipediaArticle(culture_path.read_text(encoding="utf-8"))
     main_text = culture_page.get_main_text()
@@ -27,6 +23,8 @@ def test_extract_text_from_html_wikipedia_page():
 
 
 def test_extract_language_links_from_html_wikipedia_page():
+    download_wikipedia_scraping_result()
+
     culture_path = EN_WIKIPEDIA_PATH / "Culture" / "body"
     culture_page = WikipediaArticle(culture_path.read_text(encoding="utf-8"))
     language_links = culture_page.get_language_links()
