@@ -1,6 +1,13 @@
 from collections import Counter
 import pytest
+import numpy as np
+from numpy.testing import assert_array_equal
 import pandas as pd
+
+from sklearn.model_selection import train_test_split
+from sklearn.pipeline import make_pipeline
+from sklearn.linear_model import SGDClassifier
+from sklearn.feature_extraction.text import HashingVectorizer
 
 from tmclass_solutions.language_detector import wikipedia_language
 from tmclass_solutions.language_detector import split_paragraphs
@@ -122,3 +129,37 @@ def test_language_detector_dataset():
     #     "text": texts,
     # })
     # dataset.to_parquet(DATA_FOLDER_PATH / "wikipedia_language.parquet")
+
+
+def test_build_model():
+    df = pd.read_parquet(DATA_FOLDER_PATH / "wikipedia_language.parquet")
+    df_train, df_test = train_test_split(
+        df, train_size=int(1e3), test_size=int(1e3), random_state=0)
+
+    text_classifier = make_pipeline(
+        HashingVectorizer(analyzer="char", ngram_range=(1, 3),
+                          norm='l2', dtype=np.float32),
+        SGDClassifier(early_stopping=True, validation_fraction=0.2,
+                      n_iter_no_change=3, max_iter=1000, tol=1e-3,
+                      alpha=1e-5, penalty="elasticnet", random_state=0)
+    )
+    text_classifier.fit(df_train["text"], df_train["language"])
+
+    train_acc = text_classifier.score(df_train["text"], df_train["language"])
+    assert train_acc > 0.9
+
+    test_acc = text_classifier.score(df_test["text"], df_test["language"])
+    assert test_acc > 0.9
+
+    poetry_folder = DATA_FOLDER_PATH / "poetry"
+    basho = (poetry_folder / "basho.txt").read_text("shift-jis")
+    baudelaire = (poetry_folder / "baudelaire.txt").read_text("iso-8859-15")
+    rumi = (poetry_folder / "rumi.txt").read_text("utf-8")
+    shakespeare = (poetry_folder / "shakespeare.txt").read_text("utf-8")
+    verlaine = (poetry_folder / "verlaine.txt").read_text("utf-8")
+
+    poetry = [basho, baudelaire, rumi, shakespeare, verlaine]
+    assert_array_equal(
+        text_classifier.predict(poetry),
+        ["ja", "fr", "fa", "en", "fr"],
+    )
