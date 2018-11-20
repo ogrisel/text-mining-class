@@ -48,13 +48,13 @@ def make_language_detector_dataset(html_filepaths, min_length=30):
     return texts, language_labels, article_names
 
 
-def build_language_classifier(texts, labels, random_state=None):
+def build_language_classifier(texts, labels, verbose=False, random_state=None):
     language_classifier = make_pipeline(
         TfidfVectorizer(analyzer="char", ngram_range=(1, 3),
                         min_df=2, max_df=0.9, norm="l2", dtype=np.float32),
         SGDClassifier(early_stopping=True, validation_fraction=0.2,
                       n_iter_no_change=3, max_iter=1000, tol=1e-3,
-                      alpha=1e-5, penalty="l2",
+                      alpha=1e-5, penalty="l2", verbose=verbose,
                       random_state=random_state)
     )
     return language_classifier.fit(texts, labels)
