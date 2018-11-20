@@ -1,19 +1,18 @@
 from collections import Counter
+import json
 import pytest
-import numpy as np
 from numpy.testing import assert_array_equal
 import pandas as pd
-
 from sklearn.model_selection import train_test_split
-from sklearn.pipeline import make_pipeline
-from sklearn.linear_model import SGDClassifier
-from sklearn.feature_extraction.text import HashingVectorizer
 
 from tmclass_exercises.language_detector import wikipedia_language
 from tmclass_exercises.language_detector import split_paragraphs
 from tmclass_exercises.language_detector import make_language_detector_dataset
+from tmclass_exercises.language_detector import build_language_classifier
+from tmclass_exercises.language_detector import LanguageDetector
 from tmclass_exercises.data_download import download_wikipedia_scraping_result
 from tmclass_exercises.data_download import download_wikipedia_language_dataset
+from tmclass_exercises.data_download import download_language_classifier
 from tmclass_exercises import DATA_FOLDER_PATH
 
 
@@ -126,50 +125,47 @@ def test_language_detector_dataset():
     # dataset.to_parquet(DATA_FOLDER_PATH / "wikipedia_language.parquet")
 
 
-def test_build_model():
+def test_build_language_classifier():
     # Make sure that the language dataset is ready
     download_wikipedia_language_dataset()
 
+    # Subsample the training set to make the test run fast enough.
     df = pd.read_parquet(DATA_FOLDER_PATH / "wikipedia_language.parquet")
     df_train, df_test = train_test_split(
         df, train_size=int(1e3), test_size=int(1e3), random_state=0)
 
-    text_classifier = make_pipeline(
-        HashingVectorizer(analyzer="char", ngram_range=(1, 3),
-                          norm="l2", dtype=np.float32),
-        SGDClassifier(early_stopping=True, validation_fraction=0.2,
-                      n_iter_no_change=3, max_iter=1000, tol=1e-3,
-                      alpha=1e-5, penalty="elasticnet", random_state=0)
-    )
-    text_classifier.fit(df_train["text"], df_train["language"])
+    text_classifier = build_language_classifier(
+        df_train["text"], df_train["language"],
+        random_state=0)
 
     train_acc = text_classifier.score(df_train["text"], df_train["language"])
-    assert train_acc > 0.9
-
     test_acc = text_classifier.score(df_test["text"], df_test["language"])
-    assert test_acc > 0.9
+    assert train_acc > 0.97 and test_acc > 0.95
 
     short_texts = [
         "Do you understand the instructions?",
         "¿Entiendes las instrucciones?",
+        "Coneixes les instruccions?",
         "Comprenez-vous les instructions?",
         "Hai capito le istruzioni?",
         "Verstehst du die Anweisungen?",
     ]
     assert_array_equal(
         text_classifier.predict(short_texts),
-        ["en", "es", "fr", "it", "de"],
+        ["en", "es", "ca", "fr", "it", "de"],
     )
 
-    poetry_folder = DATA_FOLDER_PATH / "poetry"
-    basho = (poetry_folder / "basho.txt").read_text("shift-jis")
-    baudelaire = (poetry_folder / "baudelaire.txt").read_text("iso-8859-15")
-    rumi = (poetry_folder / "rumi.txt").read_text("utf-8")
-    shakespeare = (poetry_folder / "shakespeare.txt").read_text("utf-8")
-    verlaine = (poetry_folder / "verlaine.txt").read_text("utf-8")
 
-    poetry = [basho, baudelaire, rumi, shakespeare, verlaine]
-    assert_array_equal(
-        text_classifier.predict(poetry),
-        ["ja", "fr", "fa", "en", "fr"],
-    )
+def test_language_detector_with_pretrained_model():
+    download_language_classifier()
+    language_detector = LanguageDetector()
+
+    assert language_detector("") is None
+
+    metadata_path = DATA_FOLDER_PATH / "poetry/metadata.json"
+    metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
+
+    for poem in metadata:
+        filepath = DATA_FOLDER_PATH / "poetry" / poem["filename"]
+        text = filepath.read_text(encoding=poem["encoding"])
+        assert language_detector(text) == poem["language"]

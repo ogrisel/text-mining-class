@@ -2,6 +2,7 @@ import pytest
 import json
 
 from tmclass_exercises.text_indexing import TextIndex
+from tmclass_exercises.data_download import download_language_classifier
 from tmclass_exercises import POETRY_FOLDER_PATH
 
 with open(POETRY_FOLDER_PATH / 'metadata.json') as f:
@@ -101,25 +102,26 @@ def test_index_japanese_text_files():
     assert index.lookup_token("蛙") == ["basho.txt"]
 
 
-def test_complex_queries():
+def test_complex_queries_with_language_detection():
     pytest.importorskip("janome")  # skip this test if janome is not installed
+    download_language_classifier()
 
     index = TextIndex()
     index.index_text_file(POETRY_FOLDER_PATH / 'basho.txt',
-                          language="ja", encoding="shift-jis")
+                          encoding="shift-jis")
     index.index_text_file(POETRY_FOLDER_PATH / 'baudelaire.txt',
-                          language="fr", encoding="iso-8859-15")
+                          encoding="iso-8859-15")
     index.index_text_file(POETRY_FOLDER_PATH / 'rumi.txt',
-                          language="fa", encoding="utf-8")
+                          encoding="utf-8")
     index.index_text_file(POETRY_FOLDER_PATH / 'shakespeare.txt',
-                          language="en", encoding="utf-8")
+                          encoding="utf-8")
     index.index_text_file(POETRY_FOLDER_PATH / 'verlaine.txt',
-                          language="fr", encoding="utf-8")
+                          encoding="utf-8")
 
-    assert index.query("feeriques palais", language="fr") == ["baudelaire.txt"]
-    assert index.query("Féeriques palais", language="fr") == ["baudelaire.txt"]
+    assert index.query("feeriques palais") == ["baudelaire.txt"]
+    assert index.query("Féeriques palais") == ["baudelaire.txt"]
 
-    assert index.query("Winter Bite!", language="en") == ["shakespeare.txt"]
-    assert index.query("水の音", language="ja") == ["basho.txt"]
+    assert index.query("Winter Bite!") == ["shakespeare.txt"]
+    assert index.query("水の音") == ["basho.txt"]
 
-    assert index.query("unexistingtoken", language="en") == []
+    assert index.query("unexistingtoken") == []
