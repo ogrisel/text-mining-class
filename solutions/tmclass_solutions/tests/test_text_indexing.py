@@ -2,7 +2,7 @@ import pytest
 import json
 
 from tmclass_solutions.text_indexing import TextIndex
-from tmclass_solutions.data_download import download_language_classifier
+from tmclass_solutions.language_detector import get_language_detector
 from tmclass_solutions import POETRY_FOLDER_PATH
 
 with open(POETRY_FOLDER_PATH / 'metadata.json') as f:
@@ -102,9 +102,10 @@ def test_index_japanese_text_files():
     assert index.lookup_token("蛙") == ["basho.txt"]
 
 
+@pytest.mark.skipif(get_language_detector() is None,
+                    reason="Test requires the pre-trained language detector.")
 def test_complex_queries_with_language_detection():
     pytest.importorskip("janome")  # skip this test if janome is not installed
-    download_language_classifier()
 
     index = TextIndex()
     index.index_text_file(POETRY_FOLDER_PATH / 'basho.txt',

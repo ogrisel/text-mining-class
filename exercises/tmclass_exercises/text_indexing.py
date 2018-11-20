@@ -1,4 +1,4 @@
-from tmclass_exercises.language_detector import LanguageDetector
+"""Simplistic in-memory indexing of text documents."""
 
 
 class TextIndex:
@@ -28,7 +28,6 @@ class TextIndex:
         # Initialize an empty Python dictionary to map text token to the the
         # names of document that contains that token.
         self._token_to_doc = {}
-        self._language_detector = LanguageDetector()
 
     def __len__(self):
         """Return the total number of indexed documents

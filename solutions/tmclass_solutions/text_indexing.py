@@ -1,7 +1,9 @@
+"""Simplistic in-memory indexing of text documents."""
+
 from tmclass_solutions.text_manipulation import tokenize_generic
 from tmclass_solutions.text_manipulation import tokenize_japanese
 from tmclass_solutions.text_manipulation import remove_accents
-from tmclass_solutions.language_detector import LanguageDetector
+from tmclass_solutions.language_detector import get_language_detector
 
 
 class TextIndex:
@@ -31,7 +33,17 @@ class TextIndex:
         # Initialize an empty Python dictionary to map text token to the the
         # names of document that contains that token.
         self._token_to_doc = {}
-        self._language_detector = LanguageDetector()
+        self._language_detector = get_language_detector()
+
+    def _get_language(self, text, language):
+        if language is not None:
+            return language
+
+        if self._language_detector is None:
+            raise RuntimeError(
+                "Missing pre-trained language detection model. "
+                "Run:\n\npython -m tmclass_solutions.data_download")
+        return self._language_detector(text)
 
     def __len__(self):
         """Return the total number of indexed documents
@@ -60,8 +72,7 @@ class TextIndex:
         This preprocessing is applied both on the text content of a document to
         index and to any text query prior to tokenization.
         """
-        if language is None:
-            language = self._language_detector(text)
+        language = self._get_language(text, language)
         if language in ("de", "en", "fr", "es", "ca"):
             # The above list of language codes is incompilete for real use but
             # enough as a demo demo.
@@ -79,8 +90,7 @@ class TextIndex:
         Tokenization is applied both on the text content of a document to index
         and to any text query.
         """
-        if language is None:
-            language = self._language_detector(text)
+        language = self._get_language(text, language)
         if language == "ja":
             return tokenize_japanese(text)
         else:
@@ -95,8 +105,7 @@ class TextIndex:
         Then for each token, the name of the document where that token occurs
         in the document are inserted in the index.
         """
-        if language is None:
-            language = self._language_detector(text_content)
+        language = self._get_language(text_content, language)
         text_content = self.preprocess(text_content, language=language)
         tokens = self.tokenize(text_content, language=language)
         for token in tokens:
@@ -128,8 +137,7 @@ class TextIndex:
         The list of names is sorted by alphabetical order to get deterministic
         outputs so as to ease testing.
         """
-        if language is None:
-            language = self._language_detector(query_text)
+        language = self._get_language(query_text, language)
         query_text = self.preprocess(query_text, language=language)
         query_tokens = self.tokenize(query_text, language=language)
         result_set = None

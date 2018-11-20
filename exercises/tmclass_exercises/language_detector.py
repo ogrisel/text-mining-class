@@ -39,7 +39,7 @@ def build_language_classifier(texts, labels, random_state=None):
 class LanguageDetector:
     """Helper tool to use a pretrained mode to detect language from text"""
 
-    def __init__(self, model=LANGUAGE_CLASSIFIER_PATH):
+    def __init__(self, model):
         if isinstance(model, Path):
             opener = GzipFile if model.name.endswith(".gz") else open
             with opener(model, 'rb') as f:
@@ -51,3 +51,11 @@ class LanguageDetector:
             # Do not trust the bias of the model for such an extreme case.
             return None
         return self.model.predict([text])[0]
+
+
+def get_language_detector():
+    """"Load a language detector from a pre-trained model"""
+    if LANGUAGE_CLASSIFIER_PATH.exists():
+        return LanguageDetector(LANGUAGE_CLASSIFIER_PATH)
+    else:
+        return None

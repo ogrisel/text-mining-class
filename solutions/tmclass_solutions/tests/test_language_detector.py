@@ -9,10 +9,9 @@ from tmclass_solutions.language_detector import wikipedia_language
 from tmclass_solutions.language_detector import split_paragraphs
 from tmclass_solutions.language_detector import make_language_detector_dataset
 from tmclass_solutions.language_detector import build_language_classifier
-from tmclass_solutions.language_detector import LanguageDetector
+from tmclass_solutions.language_detector import get_language_detector
 from tmclass_solutions.data_download import download_wikipedia_scraping_result
 from tmclass_solutions.data_download import download_wikipedia_language_dataset
-from tmclass_solutions.data_download import download_language_classifier
 from tmclass_solutions import DATA_FOLDER_PATH
 
 
@@ -157,8 +156,9 @@ def test_build_language_classifier():
 
 
 def test_language_detector_with_pretrained_model():
-    download_language_classifier()
-    language_detector = LanguageDetector()
+    language_detector = get_language_detector()
+    if language_detector is None:
+        pytest.skip("Missing pre-trained language detection model.")
 
     assert language_detector("") is None
 
