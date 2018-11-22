@@ -1,5 +1,4 @@
-[![Azure](https://dev.azure.com/ogrisel/text-mining-class/_apis/build/status/azure-pipeline%20ogrisel.text-mining-class)](
-    https://dev.azure.com/ogrisel/text-mining-class/_build)
+[![Build Status](https://dev.azure.com/ogrisel/text-mining-class/_apis/build/status/ogrisel.text-mining-class?branchName=master)](https://dev.azure.com/ogrisel/text-mining-class/_build/latest?definitionId=1)
 
 # Introduction to text processing, mining and natural language understanding
 
