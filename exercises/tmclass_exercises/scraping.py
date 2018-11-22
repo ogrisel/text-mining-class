@@ -7,10 +7,6 @@ from pathlib import Path
 # import json
 
 
-class DisallowedFetchError(Exception):
-    pass
-
-
 class WikipediaArticle:
     """Structured reprenstentation of an Wikipedia page
 
