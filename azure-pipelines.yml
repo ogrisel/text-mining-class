@@ -18,8 +18,7 @@ jobs:
 
   steps:
     - script: |
-        echo ". /usr/share/miniconda/etc/profile.d/conda.sh" >> ~/.bashrc
-        source ~/.bashrc
+        source /usr/share/miniconda/etc/profile.d/conda.sh
       displayName: "Enable conda activate command"
 
     - task: UsePythonVersion@0
@@ -30,7 +29,7 @@ jobs:
     - script: |
         conda env create -f environment.yml
         conda activate tmclass
-        displayName: "Setup conda env"
+      displayName: "Setup conda env"
 
     - script: |
         python -V
