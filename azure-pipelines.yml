@@ -17,15 +17,22 @@ jobs:
     maxParallel: 2
 
   steps:
-    - task: CondaEnvironment@1
+    - task: UsePythonVersion@0
       inputs:
-        createCustomEnvironment: true
-        environmentName: tmclass
-        packageSpecs: 'python=$(python.version)'
-        updateConda: true
-  
+        versionSpec: '$(python.version)'
+        architecture: 'x64'
+
     - script: |
-        conda env update -n tmclass -f environment.yml
+        conda env create -f environment.yml
+        conda activate tmclass
+        displayName: "Setup conda env"
+
+    - script: |
+        python -V
+        python -c "import sys; print(sys.executable)"
+      displayName: "Check Python"
+
+    - script: |
         pip install janome  # optional dependency for japanese
         pip install -e exercises
         pip install -e solutions
@@ -37,8 +44,8 @@ jobs:
       displayName: 'Code and style checks (flake8)'
 
     - script: |
-        python -m tmclass_exercises.data_parallel
-        python -m tmclass_solutions.data_parallel
+        python -m tmclass_exercises.data_download
+        python -m tmclass_solutions.data_download
       displayName: "Download auxiliary data and models"
 
     - script: |
@@ -80,8 +87,8 @@ jobs:
       displayName: 'Code and style checks (flake8)'
 
     - script: |
-        python -m tmclass_exercises.data_parallel
-        python -m tmclass_solutions.data_parallel
+        python -m tmclass_exercises.data_download
+        python -m tmclass_solutions.data_download
       displayName: "Download auxiliary data and models"
 
     - script: |
