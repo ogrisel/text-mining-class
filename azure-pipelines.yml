@@ -18,16 +18,14 @@ jobs:
 
   steps:
     - script: |
+        echo $PATH
         source /usr/share/miniconda/etc/profile.d/conda.sh
       displayName: "Enable conda activate command"
 
-    - task: UsePythonVersion@0
-      inputs:
-        versionSpec: '$(python.version)'
-        architecture: 'x64'
-
     - script: |
-        conda env create -f environment.yml
+        echo $PATH
+        conda create -y -n tmclass python=$(python.version)
+        conda env update tmclass -f environment.yml
         conda activate tmclass
       displayName: "Setup conda env"
 
