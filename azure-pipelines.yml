@@ -17,6 +17,11 @@ jobs:
     maxParallel: 2
 
   steps:
+    - script: |
+        echo ". /usr/share/miniconda/etc/profile.d/conda.sh" >> ~/.bashrc
+        source ~/.bashrc
+      displayName: "Enable conda activate command"
+
     - task: UsePythonVersion@0
       inputs:
         versionSpec: '$(python.version)'
