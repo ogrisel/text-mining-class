@@ -1,19 +1,19 @@
-import pytest
 import json
+import pytest
 from urllib.parse import quote
 from tmclass_exercises.scraping import SimpleWebScraper
 from tmclass_exercises.scraping import WikipediaArticle
-from tmclass_exercises.data_download import download_wikipedia_scraping_result
 
 from tmclass_exercises import DATA_FOLDER_PATH as ROOT
 
 EN_WIKIPEDIA_PATH = ROOT / "wikipedia_scraping" / "en.wikipedia.org" / "wiki"
 
 
+@pytest.mark.skipif(not EN_WIKIPEDIA_PATH.exists(),
+                    reason="Need Wikipedia dataset, run:"
+                           " python -m tmclass_exercises.data_download")
 @pytest.mark.xfail(reason="TODO: remove this xfail marker and fix the code")
 def test_extract_text_from_html_wikipedia_page():
-    download_wikipedia_scraping_result()
-
     culture_path = EN_WIKIPEDIA_PATH / "Culture" / "body"
     culture_page = WikipediaArticle(culture_path.read_text(encoding="utf-8"))
     main_text = culture_page.get_main_text()
@@ -24,10 +24,11 @@ def test_extract_text_from_html_wikipedia_page():
     assert len(paragraphs) == 35
 
 
+@pytest.mark.skipif(not EN_WIKIPEDIA_PATH.exists(),
+                    reason="Need Wikipedia dataset, run:"
+                           " python -m tmclass_exercises.data_download")
 @pytest.mark.xfail(reason="TODO: remove this xfail marker and fix the code")
 def test_extract_language_links_from_html_wikipedia_page():
-    download_wikipedia_scraping_result()
-
     culture_path = EN_WIKIPEDIA_PATH / "Culture" / "body"
     culture_page = WikipediaArticle(culture_path.read_text(encoding="utf-8"))
     language_links = culture_page.get_language_links()

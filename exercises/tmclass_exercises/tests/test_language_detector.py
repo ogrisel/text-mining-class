@@ -10,9 +10,10 @@ from tmclass_exercises.language_detector import split_paragraphs
 from tmclass_exercises.language_detector import make_language_detector_dataset
 from tmclass_exercises.language_detector import build_language_classifier
 from tmclass_exercises.language_detector import get_language_detector
-from tmclass_exercises.data_download import download_wikipedia_scraping_result
-from tmclass_exercises.data_download import download_wikipedia_language_dataset
 from tmclass_exercises import DATA_FOLDER_PATH
+
+WIKIPEDIA_LANGUAGE_DATA = DATA_FOLDER_PATH / "wikipedia_language.parquet"
+WIKIPEDIA_SCRAPING_DATA = DATA_FOLDER_PATH / "wikipedia_scraping"
 
 
 @pytest.mark.xfail(reason="TODO: remove this xfail marker and fix the code")
@@ -77,13 +78,12 @@ def test_split_paragraph_100():
     assert paragraphs[1].endswith("very\nrepetitive.")
 
 
+@pytest.mark.skipif(not WIKIPEDIA_SCRAPING_DATA.exists(),
+                    reason="Need Wikipedia scraping dataset, run:"
+                           " python -m tmclass_exercises.data_download")
 @pytest.mark.xfail(reason="TODO: remove this xfail marker and fix the code")
 def test_language_detector_dataset():
-    # Make sure that the pre-scraped dataset is available
-    download_wikipedia_scraping_result()
-
-    scraping_folder = DATA_FOLDER_PATH / "wikipedia_scraping"
-    html_filepaths = sorted(scraping_folder.glob("**/body"))
+    html_filepaths = sorted(WIKIPEDIA_SCRAPING_DATA.glob("**/body"))
 
     texts, language_labels, article_names = make_language_detector_dataset(
         html_filepaths, min_length=30)
@@ -128,13 +128,13 @@ def test_language_detector_dataset():
     # dataset.to_parquet(DATA_FOLDER_PATH / "wikipedia_language.parquet")
 
 
+@pytest.mark.skipif(not WIKIPEDIA_LANGUAGE_DATA.exists(),
+                    reason="Need Wikipedia language dataset, run:"
+                           " python -m tmclass_exercises.data_download")
 @pytest.mark.xfail(reason="TODO: remove this xfail marker and fix the code")
 def test_build_language_classifier():
-    # Make sure that the language dataset is ready
-    download_wikipedia_language_dataset()
-
     # Subsample the training set to make the test run fast enough.
-    df = pd.read_parquet(DATA_FOLDER_PATH / "wikipedia_language.parquet")
+    df = pd.read_parquet(WIKIPEDIA_LANGUAGE_DATA)
     df_train, df_test = train_test_split(
         df, train_size=int(1e3), test_size=int(1e3), random_state=0)
 
