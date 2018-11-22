@@ -21,7 +21,7 @@ jobs:
         architecture: 'x64'
 
     - script: |
-        python -m pip install -r requirements.txt
+        python -m pip install -r tools/ci/requirements.txt
         python -m pip install -e exercises -e solutions
       displayName: "Installation"
 
