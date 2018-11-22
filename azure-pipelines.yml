@@ -22,15 +22,14 @@ jobs:
         architecture: 'x64'
 
     - script: |
-        pip install -r requirements.txt
-        pip install janome  # optional dependency for japanese
-        pip install -e exercises
-        pip install -e solutions
+        python -m pip install -r requirements.txt
+        # pip install janome  # optional dependency for japanese
+        python -m pip install -e exercises
+        python -m pip install -e solutions
       displayName: "Installation"
 
     - script: |
-        python -m pip install flake8
-        flake8 .
+        python -m flake8
       displayName: 'Code and style checks (flake8)'
 
     - script: |
@@ -39,11 +38,11 @@ jobs:
       displayName: "Download auxiliary data and models"
 
     - script: |
-        pytest -vv -l exercises --junitxml=test-exercises-results.xml
+        python -m pytest -vv -l exercises --junitxml=test-exercises-results.xml
       displayName: "Pytest exercises"
 
     - script: |
-        pytest -vv -l solutions --junitxml=test-solutions-results.xml
+        python -m pytest -vv -l solutions --junitxml=test-solutions-results.xml
       displayName: "Pytest solutions"
 
     - task: PublishTestResults@2

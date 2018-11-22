@@ -12,6 +12,3 @@ dependencies:
   - pyarrow
   - pytest
   - flake8
-  - gensim
-  - spacy
-

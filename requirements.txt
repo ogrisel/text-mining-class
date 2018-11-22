@@ -5,8 +5,6 @@ cssselect
 selenium
 matplotlib
 scikit-learn
-gensim
-spacy
 pandas
 pyarrow
 pytest
