@@ -1,11 +1,11 @@
 import shutil
 import json
 
-from tmclass_exercises.text_encoding import count_bytes
-from tmclass_exercises.text_encoding import text_in_bytes
-from tmclass_exercises.text_encoding import count_bytes_in_file
-from tmclass_exercises.text_encoding import text_in_file
-from tmclass_exercises.text_encoding import convert_text_file
+from tmclass_exercises.encoding import count_bytes
+from tmclass_exercises.encoding import text_in_bytes
+from tmclass_exercises.encoding import count_bytes_in_file
+from tmclass_exercises.encoding import text_in_file
+from tmclass_exercises.encoding import convert_text_file
 from tmclass_exercises import DATA_FOLDER_PATH
 from tmclass_exercises import POETRY_FOLDER_PATH
 import pytest

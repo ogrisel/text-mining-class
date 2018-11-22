@@ -1,11 +1,11 @@
 import shutil
 import json
 
-from tmclass_solutions.text_encoding import count_bytes
-from tmclass_solutions.text_encoding import text_in_bytes
-from tmclass_solutions.text_encoding import count_bytes_in_file
-from tmclass_solutions.text_encoding import text_in_file
-from tmclass_solutions.text_encoding import convert_text_file
+from tmclass_solutions.encoding import count_bytes
+from tmclass_solutions.encoding import text_in_bytes
+from tmclass_solutions.encoding import count_bytes_in_file
+from tmclass_solutions.encoding import text_in_file
+from tmclass_solutions.encoding import convert_text_file
 from tmclass_solutions import DATA_FOLDER_PATH
 from tmclass_solutions import POETRY_FOLDER_PATH
 import pytest
