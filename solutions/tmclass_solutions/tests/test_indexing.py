@@ -102,9 +102,34 @@ def test_index_japanese_text_files():
     assert index.lookup_token("蛙") == ["basho.txt"]
 
 
+
+
+
 @pytest.mark.skipif(get_language_detector() is None,
                     reason="Test requires the pre-trained language detector.")
 def test_complex_queries_with_language_detection():
+    index = TextIndex()
+    index.index_text_file(POETRY_FOLDER_PATH / 'baudelaire.txt',
+                          encoding="iso-8859-15")
+    index.index_text_file(POETRY_FOLDER_PATH / 'rumi.txt',
+                          encoding="utf-8")
+    index.index_text_file(POETRY_FOLDER_PATH / 'shakespeare.txt',
+                          encoding="utf-8")
+    index.index_text_file(POETRY_FOLDER_PATH / 'verlaine.txt',
+                          encoding="utf-8")
+
+    assert index.query("feeriques palais") == ["baudelaire.txt"]
+    assert index.query("Féeriques palais") == ["baudelaire.txt"]
+
+    assert index.query("Winter Bite!") == ["shakespeare.txt"]
+    assert index.query("سبزپوشان خزان") == ["rumi.txt"]
+
+    assert index.query("unexistingtoken") == []
+
+
+@pytest.mark.skipif(get_language_detector() is None,
+                    reason="Test requires the pre-trained language detector.")
+def test_complex_queries_with_language_detection_japanese():
     pytest.importorskip("janome")  # skip this test if janome is not installed
 
     index = TextIndex()
@@ -119,10 +144,4 @@ def test_complex_queries_with_language_detection():
     index.index_text_file(POETRY_FOLDER_PATH / 'verlaine.txt',
                           encoding="utf-8")
 
-    assert index.query("feeriques palais") == ["baudelaire.txt"]
-    assert index.query("Féeriques palais") == ["baudelaire.txt"]
-
-    assert index.query("Winter Bite!") == ["shakespeare.txt"]
-    assert index.query("水の音") == ["basho.txt"]
-
-    assert index.query("unexistingtoken") == []
+    assert index.query("蛙") == ["basho.txt"]

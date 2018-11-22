@@ -116,6 +116,13 @@ On the contrary the tests of the exercises should **not** pass:
 
     pytest exercises/
 
+### Download the datasets and pre-trained models
+
+Some tests require test data to run properly. You can pre-download
+those datasets with the following command (a few 10s of MB in total).
+
+    python -m tmclass_exercises.data_download
+
 ### Configure your code editor
 
 Install [Visual Studio Code (vscode)](https://code.visualstudio.com/)
