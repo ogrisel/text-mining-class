@@ -23,9 +23,7 @@ jobs:
 
     - script: |
         python -m pip install -r requirements.txt
-        # pip install janome  # optional dependency for japanese
-        python -m pip install -e exercises
-        python -m pip install -e solutions
+        python -m pip install -e exercises -e solutions
       displayName: "Installation"
 
     - script: |
