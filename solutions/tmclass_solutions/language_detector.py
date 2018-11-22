@@ -25,7 +25,7 @@ def wikipedia_language(filepath):
     for part in Path(filepath).parts:
         if part.endswith(".wikipedia.org"):
             return part.split(".")[0]
-    raise ValueError(f"{str(filepath)} has no Wikipedia language information")
+    raise ValueError(f"{filepath} has no Wikipedia language information")
 
 
 def split_paragraphs(text, min_length=30):
