@@ -40,8 +40,12 @@ jobs:
       displayName: "Download auxiliary data and models"
 
     - script: |
-        pytest --junitxml=test-results.xml
-      displayName: "Pytest"
+        pytest exercises --junitxml=test-exercises-results.xml
+      displayName: "Pytest exercises"
+
+    - script: |
+        pytest solutions --junitxml=test-solutions-results.xml
+      displayName: "Pytest solutions"
 
     - task: PublishTestResults@1
       inputs:
