@@ -18,12 +18,12 @@ def download(url, folder_path, verbose=False):
     filepath = folder_path / url.rsplit("/", 1)[1]
     if not filepath.exists():
         if verbose:
-            print(f"Downloading {url} to {str(filepath)}...")
+            print(f"Downloading {url} to {filepath}...")
         tmp_filepath = folder_path / (filepath.name + ".part")
         urlretrieve(url, tmp_filepath)
         tmp_filepath.rename(filepath)
     else:
-        print(f"{str(filepath)} already exists.")
+        print(f"{filepath} already exists.")
     return filepath
 
 
@@ -34,10 +34,10 @@ def download_wikipedia_scraping_result(output_folder=DATA_FOLDER_PATH,
     scraping_folder = output_folder / "wikipedia_scraping"
     if scraping_folder.exists():
         if verbose:
-            print(f"{str(scraping_folder)} already exists.")
+            print(f"{scraping_folder} already exists.")
         return
 
-    print(f"Extracting {str(archive_filepath)} to {str(output_folder)}...")
+    print(f"Extracting {archive_filepath} to {output_folder}...")
     with tarfile.open(archive_filepath) as f:
         f.extractall(output_folder)
 
