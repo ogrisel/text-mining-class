@@ -1,6 +1,6 @@
 [![Build Status](https://dev.azure.com/ogrisel/text-mining-class/_apis/build/status/ogrisel.text-mining-class?branchName=master)](https://dev.azure.com/ogrisel/text-mining-class/_build/latest?definitionId=1)
 
-# Introduction to text processing, mining and natural language understanding
+# Introduction to web scraping and text mining
 
 This class is meant to teach Data Science students how to work with text data
 using tools from the Python ecosystem.
@@ -8,7 +8,7 @@ using tools from the Python ecosystem.
 List of topics to be covered in this class:
 
 - Dealing with text data: bytes, charsets and unicode symbols
-- Scrapping data from online resources
+- Scraping data from online resources
 - Bag-of-words and supervised text classification
 - Indexing full-text documents
 - Clustering: grouping similar text documents
