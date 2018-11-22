@@ -1,12 +1,12 @@
 name: tmclass
 dependencies:
-  - pip
+  - pip:
+      - matplotlib  # use pip to install matplotlib to skip the qt dependency
   - lxml
   - cssselect
   - selenium
   - ipython
   - jupyterlab
-  - matplotlib
   - scikit-learn
   - pandas
   - pyarrow
