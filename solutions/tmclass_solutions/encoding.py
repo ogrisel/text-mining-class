@@ -26,6 +26,14 @@ def count_bytes_in_file(filepath):
     """
     with open(filepath, mode='rb') as f:
         binary_content = f.read()
+
+    # Or equivalently:
+    #
+    #   from patlib import Path
+    #
+    #   filepath = Path(filepath)
+    #   binary_content = filepath.read_bytes()
+    #
     return len(binary_content)
 
 
@@ -38,6 +46,14 @@ def text_in_file(text, filepath, encoding="utf-8"):
     """
     with open(filepath, mode="r", encoding=encoding) as f:
         text_content = f.read()
+
+    # Or equivalently:
+    #
+    #   from patlib import Path
+    #
+    #   filepath = Path(filepath)
+    #   text_content = filepath.read_text(encoding=encoding)
+    #
     return text in text_content
 
 
@@ -55,3 +71,13 @@ def convert_text_file(source_filepath, source_encoding, target_filepath,
         text_content = f.read()
     with open(target_filepath, mode="w", encoding=target_encoding) as f:
         f.write(text_content)
+
+    # Or equivalently:
+    #
+    #   from patlib import Path
+    #
+    #   source_filepath = Path(source_filepath)
+    #   text_content = source_filepath.read_text(encoding=source_encoding)
+    #
+    #   target_filepath = Path(target_filepath)
+    #   target_filepath.write_text(text_content, encoding=target_encoding)
