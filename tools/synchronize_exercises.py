@@ -65,6 +65,14 @@ def sync_file(source, target_parent):
                                                "text-mining-class-exercises")
         rewritten_text = rewritten_text.replace("tmclass_solutions",
                                                 "tmclass_exercises")
+        if source.name.startswith("test_"):
+            if "pytest" not in rewritten_text:
+                rewritten_text = "import pytest\n" + rewritten_text
+            rewritten_text = rewritten_text.replace(
+                "def test_",
+                '@pytest.mark.xfail(reason="TODO: remove this xfail marker'
+                ' and fix the code")\n'
+                'def test_')
         if (not target.exists()
                 or hash_text(rewritten_text) != hash_file(target)):
             print(f"Synchronizing {source} to {target}")

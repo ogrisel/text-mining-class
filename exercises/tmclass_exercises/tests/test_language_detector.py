@@ -15,6 +15,7 @@ from tmclass_exercises.data_download import download_wikipedia_language_dataset
 from tmclass_exercises import DATA_FOLDER_PATH
 
 
+@pytest.mark.xfail(reason="TODO: remove this xfail marker and fix the code")
 def test_wikipedia_language():
     assert wikipedia_language("/path/to/it.wikipedia.org/wiki/Roma") == "it"
     assert wikipedia_language("azb.wikipedia.org") == "azb"
@@ -47,6 +48,7 @@ paragraph.
 SHORT_DOCUMENT = "This is a very short document. It has only one line."
 
 
+@pytest.mark.xfail(reason="TODO: remove this xfail marker and fix the code")
 def test_split_paragraph_30():
     paragraphs = split_paragraphs(SHORT_DOCUMENT, min_length=30)
     assert len(paragraphs) == 1
@@ -63,6 +65,7 @@ def test_split_paragraph_30():
     assert all(len(p) > 30 for p in paragraphs)
 
 
+@pytest.mark.xfail(reason="TODO: remove this xfail marker and fix the code")
 def test_split_paragraph_100():
     paragraphs = split_paragraphs(SHORT_DOCUMENT, min_length=100)
     assert len(paragraphs) == 0
@@ -74,6 +77,7 @@ def test_split_paragraph_100():
     assert paragraphs[1].endswith("very\nrepetitive.")
 
 
+@pytest.mark.xfail(reason="TODO: remove this xfail marker and fix the code")
 def test_language_detector_dataset():
     # Make sure that the pre-scraped dataset is available
     download_wikipedia_scraping_result()
@@ -124,6 +128,7 @@ def test_language_detector_dataset():
     # dataset.to_parquet(DATA_FOLDER_PATH / "wikipedia_language.parquet")
 
 
+@pytest.mark.xfail(reason="TODO: remove this xfail marker and fix the code")
 def test_build_language_classifier():
     # Make sure that the language dataset is ready
     download_wikipedia_language_dataset()
@@ -155,6 +160,7 @@ def test_build_language_classifier():
     )
 
 
+@pytest.mark.xfail(reason="TODO: remove this xfail marker and fix the code")
 def test_language_detector_with_pretrained_model():
     language_detector = get_language_detector()
     if language_detector is None:

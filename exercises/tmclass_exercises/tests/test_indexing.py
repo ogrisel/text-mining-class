@@ -9,6 +9,7 @@ with open(POETRY_FOLDER_PATH / 'metadata.json') as f:
     POETRY_METADATA = json.load(f)
 
 
+@pytest.mark.xfail(reason="TODO: remove this xfail marker and fix the code")
 def test_preprocess_text():
     index = TextIndex()
 
@@ -30,6 +31,7 @@ def test_preprocess_text():
     assert preprocessed == "古池や蛙飛び込む水の音"
 
 
+@pytest.mark.xfail(reason="TODO: remove this xfail marker and fix the code")
 def test_tokenize_text():
     index = TextIndex()
     tokens = index.tokenize("winter is coming!", language="en")
@@ -39,6 +41,7 @@ def test_tokenize_text():
     assert tokens == ["ای", "باغبان"]
 
 
+@pytest.mark.xfail(reason="TODO: remove this xfail marker and fix the code")
 def test_index_text():
     index = TextIndex()
     index.index_text("doc1", "winter is coming!", language="en")
@@ -51,6 +54,7 @@ def test_index_text():
     assert index.lookup_token("باغبان") == ["doc2"]
 
 
+@pytest.mark.xfail(reason="TODO: remove this xfail marker and fix the code")
 def test_index_french_text_files():
     index = TextIndex()
     index.index_text_file(POETRY_FOLDER_PATH / 'baudelaire.txt',
@@ -77,6 +81,7 @@ def test_index_french_text_files():
     assert index.lookup_token("inexistant") == []
 
 
+@pytest.mark.xfail(reason="TODO: remove this xfail marker and fix the code")
 def test_index_english_text_files():
     index = TextIndex()
     index.index_text_file(POETRY_FOLDER_PATH / 'shakespeare.txt',
@@ -86,6 +91,7 @@ def test_index_english_text_files():
     assert index.lookup_token("holly") == ["shakespeare.txt"]
 
 
+@pytest.mark.xfail(reason="TODO: remove this xfail marker and fix the code")
 def test_index_persian_text_files():
     index = TextIndex()
     index.index_text_file(POETRY_FOLDER_PATH / 'rumi.txt',
@@ -93,6 +99,7 @@ def test_index_persian_text_files():
     assert index.lookup_token("خزان") == ["rumi.txt"]
 
 
+@pytest.mark.xfail(reason="TODO: remove this xfail marker and fix the code")
 def test_index_japanese_text_files():
     pytest.importorskip("janome")  # skip this test if janome is not installed
 
@@ -104,6 +111,7 @@ def test_index_japanese_text_files():
 
 @pytest.mark.skipif(get_language_detector() is None,
                     reason="Test requires the pre-trained language detector.")
+@pytest.mark.xfail(reason="TODO: remove this xfail marker and fix the code")
 def test_complex_queries_with_language_detection():
     pytest.importorskip("janome")  # skip this test if janome is not installed
 

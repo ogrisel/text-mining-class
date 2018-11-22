@@ -11,6 +11,7 @@ from tmclass_exercises import POETRY_FOLDER_PATH
 import pytest
 
 
+@pytest.mark.xfail(reason="TODO: remove this xfail marker and fix the code")
 def test_count_bytes():
     assert count_bytes(b"") == 0
     assert count_bytes(b"123") == 3
@@ -25,11 +26,13 @@ def test_count_bytes():
     assert count_bytes("é".encode("utf-8")) == 2
 
 
+@pytest.mark.xfail(reason="TODO: remove this xfail marker and fix the code")
 def test_count_bytes_on_invalid_input():
     with pytest.raises(TypeError):
         count_bytes("abc")
 
 
+@pytest.mark.xfail(reason="TODO: remove this xfail marker and fix the code")
 def test_text_in_bytes():
     assert text_in_bytes("abc", b"abc", encoding='ascii')
     assert text_in_bytes("abc", bytes([97, 98, 99]), encoding='ascii')
@@ -44,6 +47,7 @@ def test_text_in_bytes():
     assert text_in_bytes("باغبان", binary_data, encoding="utf-8")
 
 
+@pytest.mark.xfail(reason="TODO: remove this xfail marker and fix the code")
 def test_count_bytes_in_files():
     basho = POETRY_FOLDER_PATH / 'basho.txt'
     assert count_bytes_in_file(basho) == basho.stat().st_size
@@ -55,6 +59,7 @@ def test_count_bytes_in_files():
     assert count_bytes_in_file(shakespeare) == shakespeare.stat().st_size
 
 
+@pytest.mark.xfail(reason="TODO: remove this xfail marker and fix the code")
 def test_text_in_files():
     # English letters without accents are encoded exactly the same way in
     # many encoding / charsets, ascii being the common subset:
@@ -74,6 +79,7 @@ def test_text_in_files():
     assert not text_in_file(text, filepath, encoding="iso-8859-15")
 
 
+@pytest.mark.xfail(reason="TODO: remove this xfail marker and fix the code")
 def test_convert_files_to_utf8():
     output_path = DATA_FOLDER_PATH / "poetry_utf8"
     # Delete the test output folder and its contents if it already exists.
