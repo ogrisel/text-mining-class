@@ -1,7 +1,6 @@
 trigger:
   - master
 
-
 jobs:
 
 - job: 'run_tests_pip'
@@ -27,10 +26,6 @@ jobs:
       displayName: "Installation"
 
     - script: |
-        python -m flake8
-      displayName: 'Code and style checks (flake8)'
-
-    - script: |
         python -m tmclass_exercises.data_download
         python -m tmclass_solutions.data_download
       displayName: "Download auxiliary data and models"
@@ -47,4 +42,9 @@ jobs:
       inputs:
         testResultsFiles: '**/test-*.xml'
         testRunTitle: 'Python $(python.version)'
+      condition: succeededOrFailed()
+
+    - script: |
+        python -m flake8
+      displayName: 'Code and style checks (flake8)'
       condition: succeededOrFailed()
