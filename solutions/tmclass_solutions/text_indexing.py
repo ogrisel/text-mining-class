@@ -35,16 +35,6 @@ class TextIndex:
         self._token_to_doc = {}
         self._language_detector = get_language_detector()
 
-    def _get_language(self, text, language):
-        if language is not None:
-            return language
-
-        if self._language_detector is None:
-            raise RuntimeError(
-                "Missing pre-trained language detection model. "
-                "Run:\n\npython -m tmclass_solutions.data_download")
-        return self._language_detector(text)
-
     def __len__(self):
         """Return the total number of indexed documents
 
@@ -152,3 +142,13 @@ class TextIndex:
             # documents.
             return []
         return sorted(result_set)
+
+    def _get_language(self, text, language):
+        if language is not None:
+            return language
+
+        if self._language_detector is None:
+            raise RuntimeError(
+                "Missing pre-trained language detection model. "
+                "Run:\n\npython -m tmclass_solutions.data_download")
+        return self._language_detector(text)
