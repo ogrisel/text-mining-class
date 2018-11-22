@@ -14,9 +14,14 @@ List of topics to be covered in this class:
 - Indexing full-text documents
 - Clustering: grouping similar text documents
 - Unsupervised Latent space models for semantic information retrieval
-- Word embeddings and supervised text classification with continuous bag of words
+
+Some possible topics for future extended versions of this class:
+
+- Word embeddings and supervised text classification with continuous bag of
+  words
 - Introduction to Knowledge Bases
-- Using pre-trained Named entity detection and Semantic role labeling to extract knowledge from text
+- Using pre-trained Named entity detection and Semantic role labeling to
+  extract knowledge from text
 - Sequence to Sequence for machine translation
 - Machine Reading
 
@@ -112,7 +117,6 @@ On the contrary the tests of the exercises should **not** pass:
 
     pytest exercises/
 
-
 ### Configure your code editor
 
 Install [VS Code](https://code.visualstudio.com/) and the official [Python
@@ -144,7 +148,7 @@ The first exercises is to implement the function named `code_points` in
 `text_manipulation.py`. Read the instructions in the file and run the first
 test for this function:
 
-    pytest -vv -k test_code_points
+    pytest -vv -k test_code_points exercises
 
 Once done, move to the next test. You can run all the tests of given group of
 exercises as follows:
