@@ -12,7 +12,6 @@ EN_WIKIPEDIA_PATH = ROOT / "wikipedia_scraping" / "en.wikipedia.org" / "wiki"
 @pytest.mark.skipif(not EN_WIKIPEDIA_PATH.exists(),
                     reason="Need Wikipedia dataset, run:"
                            " python -m tmclass_exercises.data_download")
-@pytest.mark.xfail(reason="TODO: remove this xfail marker and fix the code")
 def test_extract_text_from_html_wikipedia_page():
     culture_path = EN_WIKIPEDIA_PATH / "Culture" / "body"
     culture_page = WikipediaArticle(culture_path.read_text(encoding="utf-8"))
@@ -27,7 +26,6 @@ def test_extract_text_from_html_wikipedia_page():
 @pytest.mark.skipif(not EN_WIKIPEDIA_PATH.exists(),
                     reason="Need Wikipedia dataset, run:"
                            " python -m tmclass_exercises.data_download")
-@pytest.mark.xfail(reason="TODO: remove this xfail marker and fix the code")
 def test_extract_language_links_from_html_wikipedia_page():
     culture_path = EN_WIKIPEDIA_PATH / "Culture" / "body"
     culture_page = WikipediaArticle(culture_path.read_text(encoding="utf-8"))
@@ -41,7 +39,6 @@ def test_extract_language_links_from_html_wikipedia_page():
     assert language_links[-1] == expected_link
 
 
-@pytest.mark.xfail(reason="TODO: remove this xfail marker and fix the code")
 def test_robot_file_url():
     scraper = SimpleWebScraper()
     url = "https://en.wikipedia.org/wiki/Tomato"
@@ -51,7 +48,6 @@ def test_robot_file_url():
     assert scraper.get_robot_url(url) == "https://scikit-learn.org/robots.txt"
 
 
-@pytest.mark.xfail(reason="TODO: remove this xfail marker and fix the code")
 def test_web_scraper_robots_file_handling():
     scraper = SimpleWebScraper()
     assert scraper.can_fetch("https://en.wikipedia.org/wiki/Tomato")
@@ -59,7 +55,6 @@ def test_web_scraper_robots_file_handling():
     assert not scraper.can_fetch("https://en.wikipedia.org/wiki/Special:")
 
 
-@pytest.mark.xfail(reason="TODO: remove this xfail marker and fix the code")
 def test_web_scraper_fetch():
     scraper = SimpleWebScraper()
     headers, body = scraper.fetch("https://fr.wikipedia.org/wiki/Tomate")
@@ -75,7 +70,6 @@ def test_web_scraper_fetch():
     assert main_text.startswith("Solanum lycopersicum\n\nLe plant de tomates")
 
 
-@pytest.mark.xfail(reason="TODO: remove this xfail marker and fix the code")
 def test_web_scraper_fetch_and_save(tmpdir):
     scraper = SimpleWebScraper(output_folder=tmpdir)
     result_folder = scraper.fetch_and_save(
