@@ -47,7 +47,8 @@ jobs:
         pytest solutions --junitxml=test-solutions-results.xml
       displayName: "Pytest solutions"
 
-    - task: PublishTestResults@1
+    - task: PublishTestResults@2
       inputs:
-        testResultsFiles: 'test-*.xml'
-        testRunTitle: 'Publish test results'
+        testResultsFiles: '**/test-*.xml'
+        testRunTitle: 'Python $(python.version)'
+      condition: succeededOrFailed()
