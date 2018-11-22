@@ -21,7 +21,7 @@ jobs:
       inputs:
         createCustomEnvironment: true
         environmentName: tmclass
-        packageSpecs: 'python=${python.version}'
+        packageSpecs: 'python=$(python.version)'
         updateConda: true
   
     - script: |
