@@ -55,11 +55,11 @@ whitelist = set(hostnames)
 for article_name in english_articles:
     article_url = EN_BASE_URL + article_name
     folder = scraper.fetch_and_save(article_url)
-    print(f"Fetched {str(folder)}")
+    print(f"Fetched {folder}")
     article = WikipediaArticle((folder / "body").read_bytes())
     language_links = article.get_language_links()
     for language_link in language_links:
         if urlparse(language_link).hostname not in whitelist:
             continue
         folder = scraper.fetch_and_save(language_link)
-        print(f"Fetched {str(folder)}")
+        print(f"Fetched {folder}")
