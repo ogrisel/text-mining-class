@@ -1,0 +1,8 @@
+# Minimal requirements for the CI
+lxml
+cssselect
+scikit-learn
+pandas
+pyarrow
+pytest
+flake8
