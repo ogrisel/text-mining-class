@@ -13,7 +13,7 @@ from tmclass_solutions.data_download import download_wikipedia_language_dataset
 
 
 verbose = "--verbose" in sys.argv
-skip_cross_validation = "--skip-cross-validation" in sys.argv
+cross_validation = "--cross-validation" in sys.argv
 
 download_wikipedia_language_dataset(verbose=verbose)
 
@@ -39,7 +39,7 @@ with GzipFile(model_path_so, mode="wb") as f:
 print(f"Copying model to {model_path_so}")
 shutil.copyfile(model_path_so, model_path_ex)
 
-if not skip_cross_validation:
+if cross_validation:
     t0 = time()
     print("Performing 5-fold cross-validation across wikipedia articles...")
     cv = GroupKFold(n_splits=5).split(df, groups=df["article_name"])
