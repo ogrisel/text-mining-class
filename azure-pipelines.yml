@@ -3,7 +3,7 @@ trigger:
 
 jobs:
 
-- job: 'run_tests_pip'
+- job: 'tests'
   pool:
     vmImage: 'Ubuntu 16.04'
   strategy:
@@ -44,7 +44,18 @@ jobs:
         testRunTitle: 'Python $(python.version)'
       condition: succeededOrFailed()
 
+- job: 'flake8'
+  pool:
+    vmImage: 'Ubuntu 16.04'
+
+  steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '3.7'
+        architecture: 'x64'
+
     - script: |
+        python -m pip install flake8
         python -m flake8
       displayName: 'Code and style checks (flake8)'
       condition: succeededOrFailed()
