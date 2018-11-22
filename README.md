@@ -1,3 +1,6 @@
+[![Azure](https://dev.azure.com/ogrisel/text-mining-class/_apis/build/status/azure-pipeline%20ogrisel.text-mining-class)](
+    https://dev.azure.com/ogrisel/text-mining-class/_build)
+
 # Introduction to text processing, mining and natural language understanding
 
 This class is meant to teach Data Science students how to work with text data
