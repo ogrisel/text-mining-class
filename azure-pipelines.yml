@@ -1,0 +1,46 @@
+# Python package
+# Create and test a Python package on multiple Python versions.
+# Add steps that analyze code, save the dist with the build record, publish to a PyPI-compatible index, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/python
+
+jobs:
+
+- job: 'Test'
+  pool:
+    vmImage: 'Ubuntu 16.04'
+  strategy:
+    matrix:
+      Python36:
+        python.version: '3.6'
+      Python37:
+        python.version: '3.7'
+    maxParallel: 2
+
+  steps:
+    - task: CondaEnvironment@1
+      inputs:
+        createCustomEnvironment: true
+        environmentName: tmclass
+        packageSpecs: 'python=3.7'
+        updateConda: true
+  
+    - script: |
+        conda env update -n tmclass -f environment.yml
+        pip install janome  # optional dependency for japanese
+        pip install -e exercises
+        pip install -e solutions
+      displayName: "Installation"
+
+    - script: |
+        python -m tmclass_exercises.data_parallel
+        python -m tmclass_solutions.data_parallel
+      displayName: "Download auxiliary data and models"
+
+    - script: |
+        pytest --junitxml=test-results.xml
+      displayName: "Pytest"
+
+    - task: PublishTestResults@1
+      inputs:
+        testResultsFiles: 'test-*.xml'
+        testRunTitle: 'Publish test results'
