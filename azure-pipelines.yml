@@ -5,7 +5,7 @@
 
 jobs:
 
-- job: 'Test with conda'
+- job: 'run_tests_conda'
   pool:
     vmImage: 'Ubuntu 16.04'
   strategy:
@@ -50,7 +50,7 @@ jobs:
         testResultsFiles: 'test-*.xml'
         testRunTitle: 'Publish test results'
 
-- job: 'Test with pip'
+- job: 'run_tests_pip'
   pool:
     vmImage: 'Ubuntu 16.04'
   strategy:
