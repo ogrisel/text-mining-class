@@ -118,16 +118,28 @@ On the contrary the tests of the exercises should **not** pass:
 
 ### Configure your code editor
 
-Install [VS Code](https://code.visualstudio.com/) and the official [Python
-extension](https://marketplace.visualstudio.com/items?itemName=ms-python.python).
+Install [Visual Studio Code (vscode)](https://code.visualstudio.com/)
+and the official [Python extension
+](https://marketplace.visualstudio.com/items?itemName=ms-python.python).
 
-Open this project folder ("text-mining-class") in your editor.
+Open this project folder ("text-mining-class") in the editor.
 
-Select the `tmclass` conda environment in the bottom left
+Make sur to select the `tmclass` conda environment in the bottom left of
+the main window. You can switch with `Shitf-Ctrl-P` > `Python: Select
+Interpreter`.
 
-Enable the flake8 linter.
+Configure you editor to enable the `flake8` linter (code checker)
+instead of `pylint` and to run the tests with `pytest`.You can press
+`Ctrl-,` to open the user settings editor. Set the following options:
 
-Configure you editor to run the tests with `pytest`: TODO
+```json
+{
+    "python.unitTest.pyTestEnabled": true,
+    "python.unitTest.pyTestArgs": ["-vv"],
+    "python.linting.pylintEnabled": false,
+    "python.linting.flake8Enabled": true
+}
+```
 
 ## Doing an exercise
 
