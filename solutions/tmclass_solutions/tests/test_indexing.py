@@ -102,9 +102,6 @@ def test_index_japanese_text_files():
     assert index.lookup_token("蛙") == ["basho.txt"]
 
 
-
-
-
 @pytest.mark.skipif(get_language_detector() is None,
                     reason="Test requires the pre-trained language detector.")
 def test_complex_queries_with_language_detection():
