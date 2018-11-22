@@ -5,7 +5,7 @@
 
 jobs:
 
-- job: 'Test'
+- job: 'Test with conda'
   pool:
     vmImage: 'Ubuntu 16.04'
   strategy:
@@ -30,6 +30,54 @@ jobs:
         pip install -e exercises
         pip install -e solutions
       displayName: "Installation"
+
+    - script: |
+        python -m pip install flake8
+        flake8 .
+      displayName: 'Code and style checks (flake8)'
+
+    - script: |
+        python -m tmclass_exercises.data_parallel
+        python -m tmclass_solutions.data_parallel
+      displayName: "Download auxiliary data and models"
+
+    - script: |
+        pytest --junitxml=test-results.xml
+      displayName: "Pytest"
+
+    - task: PublishTestResults@1
+      inputs:
+        testResultsFiles: 'test-*.xml'
+        testRunTitle: 'Publish test results'
+
+- job: 'Test with pip'
+  pool:
+    vmImage: 'Ubuntu 16.04'
+  strategy:
+    matrix:
+      Python36:
+        python.version: '3.6'
+      Python37:
+        python.version: '3.7'
+    maxParallel: 2
+
+  steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '$(python.version)'
+        architecture: 'x64'
+
+    - script: |
+        pip install -r requirements.txt
+        pip install janome  # optional dependency for japanese
+        pip install -e exercises
+        pip install -e solutions
+      displayName: "Installation"
+
+    - script: |
+        python -m pip install flake8
+        flake8 .
+      displayName: 'Code and style checks (flake8)'
 
     - script: |
         python -m tmclass_exercises.data_parallel
