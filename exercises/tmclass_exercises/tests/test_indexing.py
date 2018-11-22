@@ -1,9 +1,9 @@
 import pytest
 import json
 
-from tmclass_solutions.text_indexing import TextIndex
-from tmclass_solutions.language_detector import get_language_detector
-from tmclass_solutions import POETRY_FOLDER_PATH
+from tmclass_exercises.indexing import TextIndex
+from tmclass_exercises.language_detector import get_language_detector
+from tmclass_exercises import POETRY_FOLDER_PATH
 
 with open(POETRY_FOLDER_PATH / 'metadata.json') as f:
     POETRY_METADATA = json.load(f)
