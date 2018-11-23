@@ -6,9 +6,15 @@ language of a piece of text.
 """
 from pathlib import Path
 
+# import numpy as np
 from gzip import GzipFile
 import pickle
 
+# from sklearn.pipeline import make_pipeline
+# from sklearn.linear_model import SGDClassifier
+# from sklearn.feature_extraction.text import TfidfVectorizer
+
+# from tmclass_solutions.scraping import WikipediaArticle
 from tmclass_solutions import MODEL_FOLDER_PATH
 
 
@@ -16,11 +22,42 @@ LANGUAGE_CLASSIFIER_PATH = MODEL_FOLDER_PATH / "language_classifier.pkl.gz"
 
 
 def wikipedia_language(filepath):
+    """Parse the filename to find the language code of a scraped wikipedia file
+
+    The function assumes a path such as:
+
+        /some/folder/xyz.wikipedia.org/some/file
+
+    This function returns the language code xyz (2 or 3 letters).
+
+    Raise `ValueError` if filepath has no wikipedia hostname component.
+    """
+    # Hints:
+    # - `Path(filepath).parts` returns the list of string components of a path.
+    # - Use `my_string.startswith(prefix)` or `my_string.endswith(suffix)``
+    #   to detect if `my_string` has a specific string prefix or suffix.
+    # - Use `my_string.split(separator)` to split a string.
+    # - Use `raise ValueError("Some informative message") if the input value
+    #   is not valid.
+
     # TODO: change the following:
     return "en"
 
 
 def split_paragraphs(text, min_length=30):
+    """Extract a list of paragraphs from text
+
+    Return a list of strings. Paragraphs are separated by double "new-line"
+    characters.
+
+    Any paragraph shorter than min_length is dropped.
+
+    Any whitespaces at the beginning or ending of paragraphs are trimmed.
+    """
+    # Hints:
+    # - The new line character is "\n". Some Windows applications also use
+    #   "\r\n" but this convention not used by our wikipedia scraper.
+
     # TODO: change the following:
     return [text]
 

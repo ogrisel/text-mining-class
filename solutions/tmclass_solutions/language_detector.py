@@ -22,6 +22,16 @@ LANGUAGE_CLASSIFIER_PATH = MODEL_FOLDER_PATH / "language_classifier.pkl.gz"
 
 
 def wikipedia_language(filepath):
+    """Parse the filename to find the language code of a scraped wikipedia file
+
+    The function assumes a path such as:
+
+        /some/folder/xyz.wikipedia.org/some/file
+
+    This function returns the language code xyz (2 or 3 letters).
+
+    Raise `ValueError` if filepath has no wikipedia hostname component.
+    """
     for part in Path(filepath).parts:
         if part.endswith(".wikipedia.org"):
             return part.split(".")[0]
@@ -29,6 +39,15 @@ def wikipedia_language(filepath):
 
 
 def split_paragraphs(text, min_length=30):
+    """Extract a list of paragraphs from text
+
+    Return a list of strings. Paragraphs are separated by double "new-line"
+    characters.
+
+    Any paragraph shorter than min_length is dropped.
+
+    Any whitespaces at the beginning or ending of paragraphs are trimmed.
+    """
     paragraphs = text.split("\n\n")
     return [p.strip() for p in paragraphs if len(p.strip()) >= min_length]
 

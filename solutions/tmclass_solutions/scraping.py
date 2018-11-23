@@ -67,7 +67,7 @@ class SimpleWebScraper:
 
     def fetch(self, url):
         if not self.can_fetch(url):
-            return DisallowedFetchError(
+            raise DisallowedFetchError(
                 f"robots.txt does not allow fetching {url}")
         since_last_fetch = time() - self.last_fetch_time
         if since_last_fetch < self.fetch_interval:
