@@ -108,6 +108,8 @@ venv.bak/
 
 
 # Ignored generated data files
+bbc
+bbc-fulltext.zip
 exercises/tmclass_exercises/data/poetry_utf8
 solutions/tmclass_solutions/data/poetry_utf8
 exercises/tmclass_exercises/data/wikipedia_scraping
