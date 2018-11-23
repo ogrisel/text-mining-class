@@ -89,6 +89,29 @@ def make_language_detector_dataset(html_filepaths, min_length=30):
 
 
 def build_language_classifier(texts, labels, random_state=None):
+    """Train a text classifier with scikit-learn
+
+    The text classifier is composed of two elements assembled in a pipeline:
+
+    - A text feature extractor (`TfidfVectorizer`) that extract the relative
+      frequencies of unigrams, bigrams and trigrams of characters in the text.
+
+    - An instance of `SGDClassifier` for the classification it-self. To speed
+      up training it is recommended to enable early stopping.
+
+    `random_state` is passed to the underlying `SGDClassifier` instance.
+    """
+    # Hints:
+    # - Look for examples of text classification pipelines in the scikit-learn
+    #   documentation: https://scikit-learn.org
+    # - Pass `analyzer="char"` to `TfidfVectorizer` to use character-level
+    #   features instead of word-level features.
+    # - Call the `fit` of the pipeline to train the model with `texts` as the
+    #   input data and `labels` as target variable.
+    # - You might want to use a jupyter notebook to interactively try many
+    #   model parameters and use cross-validation to find which parameter give
+    #   good results and a fast training time.
+
     # TODO: implement me!
     return None
 
