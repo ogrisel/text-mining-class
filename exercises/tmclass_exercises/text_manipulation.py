@@ -1,3 +1,4 @@
+# import unicodedata
 
 
 def code_points(text, normalize=None):
@@ -16,8 +17,9 @@ def code_points(text, normalize=None):
     # - use `text = unicodedata.normalize("NFC", text)` to normalize some text
     #   using the NFC scheme.
 
+    results = []
     # TODO: write me!
-    return []
+    return results
 
 
 def character_categories(text, normalize=None):
@@ -28,8 +30,10 @@ def character_categories(text, normalize=None):
     """
     # HINTS:
     # - `unicodedata.category(c)` returns the categoriy of character `c`
+
+    categories = []
     # TODO: write me!
-    return []
+    return categories
 
 
 def remove_accents(text):
@@ -46,7 +50,9 @@ def remove_accents(text):
     # - `unicodedata.combining(c)` returns whether `c` is a combining character
     #   (in particular accents and other diacritical marks).
     # - It is possible to assemble characters into (unicode) strings using the
-    #   + operator: `"abc" + "123" == "abc123"`
+    #   `+` operator: `"abc" + "123" == "abc123"`
+
+    # TODO: write me!
     return ""
 
 
@@ -61,6 +67,8 @@ def tokenize_generic(text):
     # - `unicodedata.category(c)` returns the categoriy of character `c`
     # - The list of categories is available at:
     # http://www.unicode.org/reports/tr44/tr44-6.html#General_Category_Values
+
+    # TODO: write me!
     return []
 
 
@@ -75,4 +83,6 @@ def tokenize_japanese(text):
     # - Use the `janome.tokenizer.Tokenizer` class tokenize the text
     # - Read the online documentation of the janome package to only return
     #   the surface form for each token.
+
+    # TODO: write me!
     return []
