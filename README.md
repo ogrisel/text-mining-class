@@ -38,7 +38,7 @@ If you forked this repository on github (recommended to be able to do the code
 review exercises), you should register your own github fork as a remote
 repository:
 
-    git remote add myname https://github.com/myname/text-mining-class 
+    git remote add myname https://github.com/myname/text-mining-class
     git remote -v
 
 You should see 2 remote repo: one named "origin" and pointing to
@@ -102,8 +102,7 @@ Install the 'text-mining-class-exercises' python package in "editable" mode:
 
     pip install --editable exercises/
 
-You can also install the  'text-mining-class-solutions' python package
-side-by-side:
+Also install the  'text-mining-class-solutions' python package side-by-side:
 
     pip install --editable solutions/
 
@@ -112,14 +111,16 @@ should all pass:
 
     pytest solutions/
 
-On the contrary the tests of the exercises should **not** pass:
+On the contrary the tests of the exercises should **not** pass (they are marked
+`xfail`):
 
     pytest exercises/
 
 ### Download the datasets and pre-trained models
 
-Some tests require test data to run properly. You can pre-download
-those datasets with the following command (a few 10s of MB in total).
+Some tests require test data to run properly and are skipped if the data is
+missing. You can pre-download those datasets with the following command (a few
+10s of MB in total).
 
     python -m tmclass_exercises.data_download
 
