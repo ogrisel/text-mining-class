@@ -17,10 +17,12 @@ WIKIPEDIA_SCRAPING_DATA = DATA_FOLDER_PATH / "wikipedia_scraping"
 
 
 def test_wikipedia_language():
-    assert wikipedia_language("/path/to/it.wikipedia.org/wiki/Roma") == "it"
     assert wikipedia_language("azb.wikipedia.org") == "azb"
     assert wikipedia_language("fr.wikipedia.org/wiki/Portail:Accueil") == "fr"
+    assert wikipedia_language("/path/to/it.wikipedia.org/wiki/Roma") == "it"
 
+
+def test_wikipedia_language_invalid_path():
     with pytest.raises(ValueError) as excinfo:
         wikipedia_language("/home/ogrisel")
 

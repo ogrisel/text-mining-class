@@ -48,11 +48,24 @@ def split_paragraphs(text, min_length=30):
 
     Any whitespaces at the beginning or ending of paragraphs are trimmed.
     """
-    paragraphs = text.split("\n\n")
-    return [p.strip() for p in paragraphs if len(p.strip()) >= min_length]
+    paragraphs = [p.strip() for p in text.split("\n\n")]
+    return [p for p in paragraphs if len(p) >= min_length]
 
 
 def make_language_detector_dataset(html_filepaths, min_length=30):
+    """Turn scraped wikipedia articles into a language dection dataset
+
+    This function extracts all the paragraphs from the HTML pages scraped from
+    Wikipedia and filters out paragraph that are shorted than min_length.
+
+    For each paragraph, the language and the article name of the paragraph are
+    also collected in auxilary lists.
+
+    This functions returns the list of texts in paragraph, the list of language
+    codes, and the list of article names. The three lists have the same number
+    of elements (with repeated values for the language and article names
+    lists).
+    """
     texts, language_labels, article_names = [], [], []
     for html_filepath in html_filepaths:
         language_label = wikipedia_language(html_filepath)

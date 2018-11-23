@@ -63,6 +63,26 @@ def split_paragraphs(text, min_length=30):
 
 
 def make_language_detector_dataset(html_filepaths, min_length=30):
+    """Turn scraped wikipedia articles into a language dection dataset
+
+    This function extracts all the paragraphs from the HTML pages scraped from
+    Wikipedia and filters out paragraph that are shorted than min_length.
+
+    For each paragraph, the language and the article name of the paragraph are
+    also collected in auxilary lists.
+
+    This functions returns the list of texts in paragraph, the list of language
+    codes, and the list of article names. The three lists have the same number
+    of elements (with repeated values for the language and article names
+    lists).
+    """
+    # Hints:
+    # - Reuse previously implemented functions and classes when appropriate.
+    # - To retrieve the the name of the parent folder of a filepath, use
+    #   filepath.parent.name
+    # - Use the `.append()` method to add elements to each of the three lists
+    #   in the same loops so as to make sure that the three lists have matching
+    #   lengths.
     texts, language_labels, article_names = [], [], []
     # TODO: implement me!
     return texts, language_labels, article_names
