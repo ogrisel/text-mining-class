@@ -163,10 +163,29 @@ Similarly open a new tab the test file named:
     exercises/tmclass_exercises/tests/test_text_manipulation.py
 
 The first exercises is to implement the function named `code_points` in
-`text_manipulation.py`. Read the instructions in the file and run the first
+`text_manipulation.py`.
+
+Read the instructions in the file and run the first
 test for this function:
 
     pytest -vv -k test_code_points exercises
+
+Alternatively you can use `vscode` to launch the tests. Here are some useful
+commands to try in the launch palette `Shift-Ctrl-P`:
+
+- `>Python: Discover Unit Tests`
+- `>Python: Run Current Unit Test File`
+- `>Python: Run Unit Test Method...`
+- `>Python: Debug Unit Test Method...`  (set a break point in the code first)
+
+You can also use `Ctrl-j` to toggle the output view panel.
+
+Notice that the test is marked `xfail`. To actually see the error message,
+remove the `@pytest.mark.xfail` for the first test in `text_manipulation.py`
+and try again.
+
+Then implement the `code_points` function in `text_manipulation.py` and launch
+the first test again and iterate until it passes
 
 Once done, move to the next test. You can run all the tests of given group of
 exercises as follows:
