@@ -56,6 +56,6 @@ jobs:
 
     - script: |
         python -m pip install flake8
-        python -m flake8
+        python -m flake8 exercises solutions
       displayName: 'Code and style checks (flake8)'
       condition: succeededOrFailed()
