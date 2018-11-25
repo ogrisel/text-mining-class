@@ -5,7 +5,7 @@ def extract_product_id(book_card):
     assert len(product_urls) == 1
     url = next(iter(product_urls))
     components = url.split("/")
-    return int(components[components.index("product") + 1])
+    return components[components.index("product") + 1]
 
 
 extract_product_id(first_card)
