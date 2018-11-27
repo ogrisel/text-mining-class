@@ -1,4 +1,4 @@
-# import unicodedata
+import unicodedata
 
 
 def code_points(text, normalize=None):
@@ -17,9 +17,9 @@ def code_points(text, normalize=None):
     # - use `text = unicodedata.normalize("NFC", text)` to normalize some text
     #   using the NFC scheme.
 
-    results = []
-    # TODO: write me!
-    return results
+    if normalize is not None:
+        text = unicodedata.normalize(normalize, text)
+    return [ord(symbol) for symbol in text]
 
 
 def character_categories(text, normalize=None):
@@ -31,8 +31,11 @@ def character_categories(text, normalize=None):
     # HINTS:
     # - `unicodedata.category(c)` returns the categoriy of character `c`
 
+    if normalize is not None:
+        text = unicodedata.normalize(normalize, text)
     categories = []
-    # TODO: write me!
+    for symbol in text:
+        categories.append(unicodedata.category(symbol))
     return categories
 
 
@@ -52,8 +55,11 @@ def remove_accents(text):
     # - It is possible to assemble characters into (unicode) strings using the
     #   `+` operator: `"abc" + "123" == "abc123"`
 
-    # TODO: write me!
-    return ""
+    result = ""
+    for symbol in unicodedata.normalize("NFD", text):
+        if unicodedata.combining(symbol) == 0:
+            result = result + symbol
+    return result
 
 
 def tokenize_generic(text):
@@ -67,9 +73,18 @@ def tokenize_generic(text):
     # - `unicodedata.category(c)` returns the categoriy of character `c`
     # - The list of categories is available at:
     # http://www.unicode.org/reports/tr44/tr44-6.html#General_Category_Values
-
-    # TODO: write me!
-    return []
+    words = []
+    current_word = ""
+    for symbol in text:
+        if unicodedata.category(symbol)[0] in ("L", "M", "N"):
+            current_word += symbol
+        else:
+            if current_word != "":
+                words.append(current_word)
+                current_word = ""
+    if current_word != "":
+        words.append(current_word)
+    return words
 
 
 def tokenize_japanese(text):
@@ -80,9 +95,8 @@ def tokenize_japanese(text):
     only to itentify words.
     """
     # HINTS:
-    # - Use the `janome.tokenizer.Tokenizer` class tokenize the text
+    # - Use the `janome.tokenizer.Tokenizer` class to tokenize the text
     # - Read the online documentation of the janome package to only return
     #   the surface form for each token.
-
-    # TODO: write me!
-    return []
+    from janome.tokenizer import Tokenizer
+    return Tokenizer().tokenize(text, wakati=True)
