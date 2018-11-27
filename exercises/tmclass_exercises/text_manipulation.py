@@ -1,4 +1,4 @@
-# import unicodedata
+import unicodedata
 
 
 def code_points(text, normalize=None):
@@ -16,10 +16,9 @@ def code_points(text, normalize=None):
     # - `list("abc")` returns a list of characters: ["a", "b", "c"]
     # - use `text = unicodedata.normalize("NFC", text)` to normalize some text
     #   using the NFC scheme.
-
-    results = []
-    # TODO: write me!
-    return results
+    if normalize is not None:
+        text = unicodedata.normalize(normalize, text)
+    return [ord(letter) for letter in list(text)]
 
 
 def character_categories(text, normalize=None):
@@ -31,9 +30,9 @@ def character_categories(text, normalize=None):
     # HINTS:
     # - `unicodedata.category(c)` returns the categoriy of character `c`
 
-    categories = []
-    # TODO: write me!
-    return categories
+    if normalize is not None:
+        text = unicodedata.normalize(normalize, text)
+    return [unicodedata.category(c) for c in text]
 
 
 def remove_accents(text):
@@ -52,8 +51,15 @@ def remove_accents(text):
     # - It is possible to assemble characters into (unicode) strings using the
     #   `+` operator: `"abc" + "123" == "abc123"`
 
-    # TODO: write me!
-    return ""
+    text = unicodedata.normalize('NFD', text)
+    char = ""
+    for c in text:
+        if unicodedata.combining(c) == 0:
+            char += c
+    return char
+
+    # return ''.join(c for c in unicodedata.normalize('NFD', text)
+    #                   if unicodedata.combinig(c) == 0)
 
 
 def tokenize_generic(text):
@@ -68,8 +74,19 @@ def tokenize_generic(text):
     # - The list of categories is available at:
     # http://www.unicode.org/reports/tr44/tr44-6.html#General_Category_Values
 
-    # TODO: write me!
-    return []
+    words = []
+    # text = unicodedata.normalize('NFD', text)
+    cur_word = ""
+    for char in text:
+        if unicodedata.category(char)[0] in ['L', 'M', 'N']:
+            cur_word += char
+        else:
+            if cur_word != "":
+                words.append(cur_word)
+            cur_word = ""
+    if cur_word != "":
+        words.append(cur_word)
+    return words
 
 
 def tokenize_japanese(text):
@@ -84,5 +101,5 @@ def tokenize_japanese(text):
     # - Read the online documentation of the janome package to only return
     #   the surface form for each token.
 
-    # TODO: write me!
-    return []
+    from janome.tokenizer import Tokenizer
+    return Tokenizer().tokenize(text, wakati=True)
