@@ -6,7 +6,6 @@ from tmclass_exercises.text_manipulation import tokenize_generic
 from tmclass_exercises.text_manipulation import tokenize_japanese
 
 
-@pytest.mark.xfail(reason="TODO: remove this xfail marker and fix the code")
 def test_code_points():
     assert code_points("ABC") == [65, 66, 67]
     assert code_points("abc") == [97, 98, 99]
@@ -16,13 +15,11 @@ def test_code_points():
     assert code_points("☃⛄⛇") == [9731, 9924, 9927]
 
 
-@pytest.mark.xfail(reason="TODO: remove this xfail marker and fix the code")
 def test_unicode_normalization():
     assert code_points("Ça va", normalize="NFC") == [199, 97, 32, 118, 97]
     assert code_points("Ça va", normalize="NFD") == [67, 807, 97, 32, 118, 97]
 
 
-@pytest.mark.xfail(reason="TODO: remove this xfail marker and fix the code")
 def test_character_category():
     text = "C’est l’été 2018 !"
     categories = character_categories(text)
@@ -40,13 +37,12 @@ def test_character_category():
         "Nd", "Nd", "Nd", "Nd", "Zs", "Po"]              # "2018 !"
 
 
-@pytest.mark.xfail(reason="TODO: remove this xfail marker and fix the code")
 def test_remove_accents():
     assert "C’est l’ete !" == remove_accents("C’est l’été !")
     assert "Ca va bien comme ca !" == remove_accents("Ça va bien comme ça !")
 
 
-@pytest.mark.xfail(reason="TODO: remove this xfail marker and fix the code")
+
 def test_tokenize_english():
     text = "This is a test."
     expected = ["This", "is", "a", "test"]
@@ -57,7 +53,7 @@ def test_tokenize_english():
     assert tokenize_generic(text) == expected
 
 
-@pytest.mark.xfail(reason="TODO: remove this xfail marker and fix the code")
+
 def test_tokenize_french():
     text = "C’est l’ete !"
     expected = ["C", "est", "l", "ete"]
@@ -68,14 +64,14 @@ def test_tokenize_french():
     assert tokenize_generic(text) == expected
 
 
-@pytest.mark.xfail(reason="TODO: remove this xfail marker and fix the code")
+
 def test_tokenize_persian():
     text = "ای باغبان ای باغبان آمد خزان آمد خزان"
     expected = ["ای", "باغبان", "ای", "باغبان", "آمد", "خزان", "آمد", "خزان"]
     assert tokenize_generic(text) == expected
 
 
-@pytest.mark.xfail(reason="TODO: remove this xfail marker and fix the code")
+
 def test_tokenize_japanese():
     pytest.importorskip('janome')  # skip this test if janome is not installed
 
