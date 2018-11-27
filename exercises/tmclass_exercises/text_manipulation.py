@@ -1,4 +1,4 @@
-# import unicodedata
+import unicodedata
 
 
 def code_points(text, normalize=None):
@@ -17,9 +17,11 @@ def code_points(text, normalize=None):
     # - use `text = unicodedata.normalize("NFC", text)` to normalize some text
     #   using the NFC scheme.
 
-    results = []
+    # results = []
     # TODO: write me!
-    return results
+    if normalize is not None:
+        text = unicodedata.normalize(normalize, text)
+    return [ord(symbol) for symbol in text]
 
 
 def character_categories(text, normalize=None):
@@ -31,9 +33,12 @@ def character_categories(text, normalize=None):
     # HINTS:
     # - `unicodedata.category(c)` returns the categoriy of character `c`
 
-    categories = []
+    # categories = []
     # TODO: write me!
-    return categories
+    if normalize is not None:
+        text = unicodedata.normalize(normalize, text)
+    return [unicodedata.category(symbol) for symbol in text]
+    # return categories
 
 
 def remove_accents(text):
@@ -53,7 +58,8 @@ def remove_accents(text):
     #   `+` operator: `"abc" + "123" == "abc123"`
 
     # TODO: write me!
-    return ""
+    text = unicodedata.normalize("NFD", text)
+    return ''.join(car for car in text if unicodedata.combining(car) == 0)
 
 
 def tokenize_generic(text):
@@ -69,7 +75,21 @@ def tokenize_generic(text):
     # http://www.unicode.org/reports/tr44/tr44-6.html#General_Category_Values
 
     # TODO: write me!
-    return []
+    collected_tokens = []
+    current_token = ""
+    for character in text:
+        if unicodedata.category(character)[0] in ('L', 'N'):
+            # Append the character (Letter or Number) to the current token:
+            current_token += character
+        else:
+            # This is not a character we are interested in: If the current
+            # token is not empty: finalize it and start a new token.
+            if current_token != "":
+                collected_tokens.append(current_token)
+            current_token = ""
+    if current_token != "":
+        collected_tokens.append(current_token)
+    return collected_tokens
 
 
 def tokenize_japanese(text):
@@ -85,4 +105,5 @@ def tokenize_japanese(text):
     #   the surface form for each token.
 
     # TODO: write me!
-    return []
+    from janome.tokenizer import Tokenizer
+    return Tokenizer().tokenize(text, wakati=True)
