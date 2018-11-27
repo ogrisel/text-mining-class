@@ -1,4 +1,4 @@
-# import unicodedata
+import unicodedata
 
 
 def code_points(text, normalize=None):
@@ -16,8 +16,10 @@ def code_points(text, normalize=None):
     # - `list("abc")` returns a list of characters: ["a", "b", "c"]
     # - use `text = unicodedata.normalize("NFC", text)` to normalize some text
     #   using the NFC scheme.
-
-    results = []
+    if normalize is not None:
+        text = unicodedata.normalize(normalize, text)
+    results = [ord(i) for i in text]
+    # results = [ord(i) for i in list(text)]
     # TODO: write me!
     return results
 
@@ -32,7 +34,10 @@ def character_categories(text, normalize=None):
     # - `unicodedata.category(c)` returns the categoriy of character `c`
 
     categories = []
-    # TODO: write me!
+    if normalize is not None:
+        text = unicodedata.normalize(normalize, text)
+    categories = [unicodedata.category(i) for i in text]
+
     return categories
 
 
@@ -52,8 +57,11 @@ def remove_accents(text):
     # - It is possible to assemble characters into (unicode) strings using the
     #   `+` operator: `"abc" + "123" == "abc123"`
 
-    # TODO: write me!
-    return ""
+    text = unicodedata.normalize("NFD", text)
+    for j in text:
+        if unicodedata.combining(j) != 0:
+            text = text.replace(j, "")
+    return text
 
 
 def tokenize_generic(text):
@@ -68,8 +76,10 @@ def tokenize_generic(text):
     # - The list of categories is available at:
     # http://www.unicode.org/reports/tr44/tr44-6.html#General_Category_Values
 
-    # TODO: write me!
-    return []
+    for i in text:
+        if unicodedata.category(i)[0] not in ['L', 'M', 'N']:
+            text = text.replace(i, " ")
+    return text.split()
 
 
 def tokenize_japanese(text):
@@ -84,5 +94,5 @@ def tokenize_japanese(text):
     # - Read the online documentation of the janome package to only return
     #   the surface form for each token.
 
-    # TODO: write me!
-    return []
+    from janome.tokenizer import Tokenizer
+    return Tokenizer().tokenize(text, wakati=True)
