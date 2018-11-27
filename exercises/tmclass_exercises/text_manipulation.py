@@ -1,4 +1,4 @@
-# import unicodedata
+import unicodedata
 
 
 def code_points(text, normalize=None):
@@ -16,10 +16,10 @@ def code_points(text, normalize=None):
     # - `list("abc")` returns a list of characters: ["a", "b", "c"]
     # - use `text = unicodedata.normalize("NFC", text)` to normalize some text
     #   using the NFC scheme.
-
-    results = []
-    # TODO: write me!
-    return results
+    if normalize is not None:
+        text = unicodedata.normalize(normalize, text)
+    #   results = [ord(i) for i in text]
+    return [ord(i) for i in text]
 
 
 def character_categories(text, normalize=None):
@@ -30,10 +30,9 @@ def character_categories(text, normalize=None):
     """
     # HINTS:
     # - `unicodedata.category(c)` returns the categoriy of character `c`
-
-    categories = []
-    # TODO: write me!
-    return categories
+    if normalize is not None:
+        text = unicodedata.normalize(normalize, text)
+    return [unicodedata.category(s) for s in text]
 
 
 def remove_accents(text):
@@ -52,8 +51,11 @@ def remove_accents(text):
     # - It is possible to assemble characters into (unicode) strings using the
     #   `+` operator: `"abc" + "123" == "abc123"`
 
-    # TODO: write me!
-    return ""
+    newtext = ""
+    for c in unicodedata.normalize("NFD", text):
+        if unicodedata.category(c) != "Mn":
+            newtext += c
+    return newtext
 
 
 def tokenize_generic(text):
@@ -67,9 +69,19 @@ def tokenize_generic(text):
     # - `unicodedata.category(c)` returns the categoriy of character `c`
     # - The list of categories is available at:
     # http://www.unicode.org/reports/tr44/tr44-6.html#General_Category_Values
-
-    # TODO: write me!
-    return []
+    L = ["L", "M", "N"]
+    result = []
+    mot = ""
+    for c in unicodedata.normalize("NFC", text):
+        if unicodedata.category(c)[0] in L:
+            mot += c
+        else:
+            if mot != "":
+                result.append(mot)
+            mot = ""
+    if mot != "":
+        result.append(mot)
+    return result
 
 
 def tokenize_japanese(text):
@@ -79,10 +91,5 @@ def tokenize_japanese(text):
     (morphological analysis): it is not possible to use spaces and punctuation
     only to itentify words.
     """
-    # HINTS:
-    # - Use the `janome.tokenizer.Tokenizer` class tokenize the text
-    # - Read the online documentation of the janome package to only return
-    #   the surface form for each token.
-
-    # TODO: write me!
-    return []
+    from janome.tokenizer import Tokenizer
+    return Tokenizer().tokenize(text, wakati=True)
