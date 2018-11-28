@@ -30,9 +30,9 @@ def character_categories(text, normalize=None):
     # HINTS:
     # - `unicodedata.category(c)` returns the categoriy of character `c`
 
-    categories = []
-    # TODO: write me!
-    return categories
+    if normalize is not None:
+        text = unicodedata.normalize(normalize, text)
+    return [unicodedata.category(symbol) for symbol in text]
 
 
 def remove_accents(text):
@@ -76,9 +76,12 @@ def tokenize_generic(text):
         else:
             if current_word != "":
                 word.append(current_word)
+                current_word = ""
+    if current_word != "":
+        word.append(current_word)
     return word
 
-
+    
 def tokenize_japanese(text):
     """Tokenize a string of Japanese text as a sequence of "word" tokens
 

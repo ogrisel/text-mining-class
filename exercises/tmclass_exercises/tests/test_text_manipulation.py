@@ -6,7 +6,7 @@ from tmclass_exercises.text_manipulation import tokenize_generic
 from tmclass_exercises.text_manipulation import tokenize_japanese
 
 
-@pytest.mark.xfail(reason="TODO: remove this xfail marker and fix the code")
+# @pytest.mark.xfail(reason="TODO: remove this xfail marker and fix the code")
 def test_code_points():
     assert code_points("ABC") == [65, 66, 67]
     assert code_points("abc") == [97, 98, 99]
@@ -22,7 +22,7 @@ def test_unicode_normalization():
     assert code_points("Ça va", normalize="NFD") == [67, 807, 97, 32, 118, 97]
 
 
-@pytest.mark.xfail(reason="TODO: remove this xfail marker and fix the code")
+# @pytest.mark.xfail(reason="TODO: remove this xfail marker and fix the code")
 def test_character_category():
     text = "C’est l’été 2018 !"
     categories = character_categories(text)
