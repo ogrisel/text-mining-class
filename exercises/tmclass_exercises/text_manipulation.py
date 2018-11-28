@@ -59,7 +59,7 @@ def remove_accents(text):
     # - `unicodedata.combining(c)` returns whether `c` is a combining character
     #   (in particular accents and other diacritical marks).
     # - It is possible to assemble characters into (unicode) strings using the
-    #   `+` operator: `"abc" + "123" == "abc123"`
+    #   `+` operator: `"abc" + "1234" == "abc1234"`
 
     texte = ""
     for caractere in text:
