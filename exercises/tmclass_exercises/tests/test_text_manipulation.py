@@ -15,11 +15,9 @@ def test_code_points():
     assert code_points("☃⛄⛇") == [9731, 9924, 9927]
 
 
-
 def test_unicode_normalization():
     assert code_points("Ça va", normalize="NFC") == [199, 97, 32, 118, 97]
     assert code_points("Ça va", normalize="NFD") == [67, 807, 97, 32, 118, 97]
-
 
 
 def test_character_category():
@@ -39,11 +37,9 @@ def test_character_category():
         "Nd", "Nd", "Nd", "Nd", "Zs", "Po"]              # "2018 !"
 
 
-
 def test_remove_accents():
     assert "C’est l’ete !" == remove_accents("C’est l’été !")
     assert "Ca va bien comme ca !" == remove_accents("Ça va bien comme ça !")
-
 
 
 def test_tokenize_english():
@@ -56,7 +52,6 @@ def test_tokenize_english():
     assert tokenize_generic(text) == expected
 
 
-
 def test_tokenize_french():
     text = "C’est l’ete !"
     expected = ["C", "est", "l", "ete"]
@@ -67,12 +62,10 @@ def test_tokenize_french():
     assert tokenize_generic(text) == expected
 
 
-
 def test_tokenize_persian():
     text = "ای باغبان ای باغبان آمد خزان آمد خزان"
     expected = ["ای", "باغبان", "ای", "باغبان", "آمد", "خزان", "آمد", "خزان"]
     assert tokenize_generic(text) == expected
-
 
 
 def test_tokenize_japanese():
