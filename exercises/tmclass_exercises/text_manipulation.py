@@ -41,7 +41,7 @@ def character_categories(text, normalize=None):
 
 def remove_accents(text):
     """Replace accentuated characters by their non-accentuated counterparts
-    
+
     A simple way to do this would be to decompose accentuated characters in the
     sequence using one of the unicode decomposition schemes and then filter the
     resulting sequence to remove combining characters (also known as
@@ -58,7 +58,7 @@ def remove_accents(text):
     text = unicodedata.normalize("NFD", text)
     for symbol in text:
         if unicodedata.combining(symbol) == 0:
-            result += symbol 
+            result += symbol
     return result
 
 
@@ -103,4 +103,3 @@ def tokenize_japanese(text):
     #   the surface form for each token.
     from janome.tokenizer import Tokenizer
     return Tokenizer().tokenize(text, wakati=True)
-    
