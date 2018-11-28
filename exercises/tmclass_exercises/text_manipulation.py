@@ -34,7 +34,7 @@ def character_categories(text, normalize=None):
 
     categories = []
     if normalize is not None:
-        text = unicodedata.normalize(normalize, text)      
+        text = unicodedata.normalize(normalize, text)
     for i in text:
         categories.append(unicodedata.category(i))
 
@@ -79,7 +79,7 @@ def tokenize_generic(text):
     collected_tokens = []
     current_token = ""
     for character in text:
-        if unicodedata.category(character)[0] in ('L', 'N'):
+        if unicodedata.category(character)[0] in ('L', 'N', 'M'):
             # Append the character (Letter or Number) to the current token:
             current_token += character
         else:
