@@ -1,5 +1,4 @@
 import unicodedata
-from janome.tokenizer import Tokenizer
 
 
 def code_points(text, normalize=None):
@@ -20,10 +19,11 @@ def code_points(text, normalize=None):
 
     results = []
     if normalize:
-        results = [ord(caractere) for caractere in unicodedata.normalize(normalize, text)]
+        results = [ord(caractere)
+                   for caractere in unicodedata.normalize(normalize, text)]
     else:
         results = [ord(caractere) for caractere in text]
-    return  results
+    return results
 
 
 def character_categories(text, normalize=None):
@@ -37,11 +37,11 @@ def character_categories(text, normalize=None):
 
     categories = []
     if normalize:
-        categories = [unicodedata.category(caractere) for caractere
-        in unicodedata.normalize(normalize, text)]
+        categories = [unicodedata.category(caractere)
+                      for caractere in unicodedata.normalize(normalize, text)]
     else:
-        categories = [unicodedata.category(caractere) for caractere
-        in text]
+        categories = [unicodedata.category(caractere)
+                      for caractere in text]
     return categories
 
 
@@ -61,8 +61,6 @@ def remove_accents(text):
     # - It is possible to assemble characters into (unicode) strings using the
     #   `+` operator: `"abc" + "123" == "abc123"`
 
-    # TODO: write me!
-
     texte = ""
     for caractere in text:
         if len(unicodedata.normalize("NFD", caractere)) >= 2:
@@ -70,7 +68,7 @@ def remove_accents(text):
         else:
             texte += unicodedata.normalize("NFD", caractere)
 
-    return  texte
+    return texte
 
 
 def tokenize_generic(text):
@@ -85,7 +83,6 @@ def tokenize_generic(text):
     # - The list of categories is available at:
     # http://www.unicode.org/reports/tr44/tr44-6.html#General_Category_Values
 
-    # TODO: write me!
     resultat = []
     ignoreValues = ["P", "Z", "C"]
     texte = ""
@@ -113,6 +110,6 @@ def tokenize_japanese(text):
     # - Read the online documentation of the janome package to only return
     #   the surface form for each token.
 
-    # TODO: write me!
+    from janome.tokenizer import Tokenizer
     t = Tokenizer()
     return t.tokenize(text, wakati=True)
