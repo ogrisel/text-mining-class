@@ -16,8 +16,6 @@ def code_points(text, normalize=None):
     # - `list("abc")` returns a list of characters: ["a", "b", "c"]
     # - use `text = unicodedata.normalize("NFC", text)` to normalize some text
     #   using the NFC scheme.
-
-    # TODO: write me!
     if normalize is not None:
         text = unicodedata.normalize(normalize, text)
     return [ord(item) for item in text]
@@ -31,7 +29,6 @@ def character_categories(text, normalize=None):
     """
     # HINTS:
     # - `unicodedata.category(c)` returns the categoriy of character `c`
-    # TODO: write me!
     if normalize is not None:
         text = unicodedata.normalize(normalize, text)
     return [unicodedata.category(symbol) for symbol in text]
@@ -53,12 +50,12 @@ def remove_accents(text):
     # - It is possible to assemble characters into (unicode) strings using the
     #   + operator: `"abc" + "123" == "abc123"`
     text = unicodedata.normalize("NFD", text)
-    reconsti_text = ""
+    text_rm_accent = ""
     for item in text:
         if unicodedata.category(item) != "Mn":
-            reconsti_text += item
+            text_rm_accent += item
 
-    return reconsti_text
+    return text_rm_accent
 
 
 def tokenize_generic(text):
