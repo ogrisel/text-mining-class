@@ -81,7 +81,7 @@ def tokenize_generic(text):
         word.append(current_word)
     return word
 
-    
+
 def tokenize_japanese(text):
     """Tokenize a string of Japanese text as a sequence of "word" tokens
 
