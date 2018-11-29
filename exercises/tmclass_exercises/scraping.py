@@ -46,7 +46,7 @@ class WikipediaArticle:
         # HINTS:
         # - `cssselect` makes it possible to get a list of DOM elements using
         #   a CSS selection expression:
-        #     elements = self.document.cssselect("#identifier tag")
+        #     elements = self.document.cssselect("parent_tag#identifier tag")
         # - For a given element, the `text_content` method retrieves the
         #   cleaned up text content of that element and all its descendants:
         #     elements[0].text_content()
