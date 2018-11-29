@@ -35,8 +35,9 @@ class WikipediaArticle:
         return sorted([tag.attrib['href'] for tag in link_tags])
 
     def get_main_text(self):
-        p_tags = self.document.cssselect(".mw-parser-output > p")
-        return "\n".join(tag.text_content() for tag in p_tags).strip()
+        elements = self.document.cssselect(".mw-parser-output > p")
+        stripped_paragraphs = [e.text_content().strip() for e in elements]
+        return "\n\n".join(p for p in stripped_paragraphs if len(p) > 0)
 
 
 class SimpleWebScraper:

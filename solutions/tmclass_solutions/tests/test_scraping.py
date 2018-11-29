@@ -20,7 +20,9 @@ def test_extract_text_from_html_wikipedia_page():
     assert main_text.endswith("tradition of textual theory.")
 
     paragraphs = main_text.split("\n\n")
-    assert len(paragraphs) == 35
+    for paragraph in paragraphs:
+        assert len(paragraph) > 0
+    assert len(paragraphs) == 36
 
 
 @pytest.mark.skipif(not EN_WIKIPEDIA_PATH.exists(),
