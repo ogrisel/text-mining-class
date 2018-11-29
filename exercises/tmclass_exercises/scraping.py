@@ -71,17 +71,52 @@ class SimpleWebScraper:
             self.output_folder = Path(output_folder)
 
     def get_robot_url(self, url):
-        # TODO: implement me!
+        """Parse url to retrieve https://hostname/robots.txt"""
+        # Hint: use urllib.parse.urlparse to extract the "scheme" ("http"
+        #       or "https") and the "hostname" of the URL.
+
+        # TODO:
         return "https://implement.me"
 
     def can_fetch(self, url):
+        """Check if it is allowed to scrape the resource hosted at url
+
+        This is done by parsing the robots.txt of the host.
+        """
+        # Hint:
+        #   Use `urllib.robotparser.RobotFileParser` to check if scraping
+        #   "url" is allowed or not for our user agent.
+
         # TODO: implement me!
         return False
 
     def fetch(self, url):
+        """Fetch the content of url
+
+        Return the dict of response headers and the bytes of the response
+        body.
+        """
+        # Hint:
+        #   Use `urllib.request.urlopen` to retrieve "URL"
+        #   Return both the dictionnary of headers and the bytes of the body
+        #   of the Response object returned by `urlopen`.
+        #   Bonus: set the User-Agent header in the Request passed to
+        #   `urlopen`.
+
         # TODO: implement me!
         return {}, b""
 
     def fetch_and_save(self, url):
+        """Fetch the content of URL
+
+        Parse URL to find the hostname and the path. Create a mirror folder
+        structure on the file system to store the results.
+
+        The bytes of the body of the response are save as a file named "body"
+        in that folder while the dict of response headers are saved as a JSON
+        file named "headers.json" in the same folder.
+        """
+        # Hint: use "urllib.parse.unquote" on the "path" component of URL
+        #       to build the folder name where to save the results.
         # TODO: implement me!
         return self.output_folder / "path/to/folder"

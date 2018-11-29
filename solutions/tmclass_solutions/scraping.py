@@ -51,10 +51,15 @@ class SimpleWebScraper:
             self.output_folder = Path(output_folder)
 
     def get_robot_url(self, url):
+        """Parse url to retrieve https://hostname/robots.txt"""
         parsed_url = urlparse(url)
         return f"{parsed_url.scheme}://{parsed_url.hostname}/robots.txt"
 
     def can_fetch(self, url):
+        """Check if it is allowed to scrape the resource hosted at url
+
+        This is done by parsing the robots.txt of the host.
+        """
         parsed_url = urlparse(url)
         # Fetching and parsing the robots.txt file can be expensive in it-self.
         # Let's cache the RobotFileParser instances, one per host, on the
@@ -67,6 +72,11 @@ class SimpleWebScraper:
         return rfp.can_fetch(self.user_agent, parsed_url.path)
 
     def fetch(self, url):
+        """Fetch the content of url
+
+        Return the dict of response headers and the bytes of the response
+        body.
+        """
         if not self.can_fetch(url):
             raise DisallowedFetchError(
                 f"robots.txt does not allow fetching {url}")
@@ -81,6 +91,15 @@ class SimpleWebScraper:
         return dict(response.headers), response.read()
 
     def fetch_and_save(self, url):
+        """Fetch the content of URL
+
+        Parse URL to find the hostname and the path. Create a mirror folder
+        structure on the file system to store the results.
+
+        The bytes of the body of the response are save as a file named "body"
+        in that folder while the dict of response headers are saved as a JSON
+        file named "headers.json" in the same folder.
+        """
         parsed_url = urlparse(url)
 
         final_path = unquote(parsed_url.path[1:])
