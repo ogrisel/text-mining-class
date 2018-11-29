@@ -26,10 +26,33 @@ class WikipediaArticle:
         strip_elements(self.document, "style")
 
     def get_language_links(self):
+        """Return the list of URLs of related pages"""
+        # HINTS:
+        # - `cssselect` makes it possible to get a list of DOM elements using
+        #   a CSS selection expression:
+        #     elements = self.document.cssselect("#identifier tag")
+        # - `element.attrib` is a dictionary of the tag attributes.
+        # - The URL of a link "a" tag is stored as the value of the `href`
+        #   attribute.
+
         # TODO: implement me!
         return []
 
     def get_main_text(self):
+        r"""Return the text of the paragraphs of the main content area
+
+        Paragraphs are separated by "\n\n".
+        """
+        # HINTS:
+        # - `cssselect` makes it possible to get a list of DOM elements using
+        #   a CSS selection expression:
+        #     elements = self.document.cssselect("#identifier tag")
+        # - For a given element, the `text_content` method retrieves the
+        #   cleaned up text content of that element and all its descendants:
+        #     elements[0].text_content()
+        # - Here we want to only select the pagraph of the main content area,
+        #   without the info box or navigation elements.
+
         # TODO: implement me!
         return ""
 
