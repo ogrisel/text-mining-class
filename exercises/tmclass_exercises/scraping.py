@@ -34,6 +34,9 @@ class WikipediaArticle:
         # - `element.attrib` is a dictionary of the tag attributes.
         # - The URL of a link "a" tag is stored as the value of the `href`
         #   attribute.
+        # - Use the "Inspect Element" function of Firefox to explore the DOM
+        #   and find identifiers or class names to precisely craft a CSS
+        #   selection expression for the language navigation links.
 
         # TODO: implement me!
         return []
@@ -50,8 +53,11 @@ class WikipediaArticle:
         # - For a given element, the `text_content` method retrieves the
         #   cleaned up text content of that element and all its descendants:
         #     elements[0].text_content()
-        # - Here we want to only select the pagraph of the main content area,
-        #   without the info box or navigation elements.
+        # - Here we want to only select the paragraphs of the main content
+        #   area, without the info box or navigation elements.
+        # - Use the "Inspect Element" function of Firefox to explore the DOM
+        #   and find identifiers or class names to precisely craft a CSS
+        #   selection expression for the paragraphs of the main content area.
 
         # TODO: implement me!
         return ""
