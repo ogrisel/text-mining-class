@@ -8,7 +8,7 @@ using tools from the Python ecosystem.
 List of topics to be covered in this class:
 
 - Dealing with text data: bytes, charsets and unicode symbols
-- Scraping data from online resources
+- Scraping data from web pages
 - Bag-of-words and supervised text classification
 - Indexing full-text documents
 - Clustering: grouping similar text documents
