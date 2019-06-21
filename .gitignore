@@ -121,3 +121,6 @@ language_classifier.pkl.gz
 
 # Ignore tmclass venv
 tmclass
+
+#
+XDG_*
