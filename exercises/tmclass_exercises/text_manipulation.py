@@ -1,4 +1,4 @@
-# import unicodedata
+import unicodedata
 
 
 def code_points(text, normalize=None):
@@ -17,9 +17,9 @@ def code_points(text, normalize=None):
     # - use `text = unicodedata.normalize("NFC", text)` to normalize some text
     #   using the NFC scheme.
 
-    results = []
-    # TODO: write me!
-    return results
+    if normalize is not None:
+        text = unicodedata.normalize(normalize, text)
+    return [ord(symbol) for symbol in text]
 
 
 def character_categories(text, normalize=None):
@@ -31,9 +31,9 @@ def character_categories(text, normalize=None):
     # HINTS:
     # - `unicodedata.category(c)` returns the categoriy of character `c`
 
-    categories = []
-    # TODO: write me!
-    return categories
+    if normalize is not None:
+        text = unicodedata.normalize(normalize, text)
+    return [unicodedata.category(symbol) for symbol in text]
 
 
 def remove_accents(text):
@@ -52,8 +52,9 @@ def remove_accents(text):
     # - It is possible to assemble characters into (unicode) strings using the
     #   `+` operator: `"abc" + "123" == "abc123"`
 
-    # TODO: write me!
-    return ""
+    text = unicodedata.normalize("NFD", text)
+    result = [symbol for symbol in text if unicodedata.combining(symbol) == 0]
+    return "".join(result)
 
 
 def tokenize_generic(text):
@@ -68,8 +69,17 @@ def tokenize_generic(text):
     # - The list of categories is available at:
     # http://www.unicode.org/reports/tr44/tr44-6.html#General_Category_Values
 
-    # TODO: write me!
-    return []
+    result, word = [], ""
+    for symbol in text:
+        if unicodedata.category(symbol)[0] in ["L", "M", "N"]:
+            word += symbol
+        else:
+            if word != "":
+                result.append(word)
+                word = ""
+    if word != "":
+        result.append(word)
+    return result
 
 
 def tokenize_japanese(text):
@@ -84,5 +94,5 @@ def tokenize_japanese(text):
     # - Read the online documentation of the janome package to only return
     #   the surface form for each token.
 
-    # TODO: write me!
-    return []
+    from janome.tokenizer import Tokenizer
+    return Tokenizer().tokenize(text, wakati=True)
