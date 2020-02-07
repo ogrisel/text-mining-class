@@ -1,4 +1,4 @@
-# import unicodedata
+import unicodedata
 
 
 def code_points(text, normalize=None):
@@ -17,9 +17,9 @@ def code_points(text, normalize=None):
     # - use `text = unicodedata.normalize("NFC", text)` to normalize some text
     #   using the NFC scheme.
 
-    results = []
-    # TODO: write me!
-    return results
+    if normalize is not None:
+        text = unicodedata.normalize(normalize, text)
+    return [ord(symbol) for symbol in text]
 
 
 def character_categories(text, normalize=None):
@@ -33,6 +33,11 @@ def character_categories(text, normalize=None):
 
     categories = []
     # TODO: write me!
+    if normalize is not None:
+        text = unicodedata.normalize(normalize, text)
+    categ = list(text)
+    for i in categ:
+        categories.append(unicodedata.category(i))
     return categories
 
 
@@ -51,9 +56,14 @@ def remove_accents(text):
     #   (in particular accents and other diacritical marks).
     # - It is possible to assemble characters into (unicode) strings using the
     #   `+` operator: `"abc" + "123" == "abc123"`
-
-    # TODO: write me!
-    return ""
+    text = unicodedata.normalize("NFD", text)
+    result = ""
+    for symbol in text:
+        if unicodedata.combining(symbol) != 0:
+            continue
+        else:
+            result = result + symbol
+    return result
 
 
 def tokenize_generic(text):
@@ -69,7 +79,21 @@ def tokenize_generic(text):
     # http://www.unicode.org/reports/tr44/tr44-6.html#General_Category_Values
 
     # TODO: write me!
-    return []
+    collected_tokens = []
+    current_token = ""
+    for character in text:
+        if unicodedata.category(character)[0] in ('L', 'N'):
+            # Append the character (Letter or Number) to the current token:
+            current_token += character
+        else:
+            # This is not a character we are interested in: If the current
+            # token is not empty: finalize it and start a new token.
+            if current_token != "":
+                collected_tokens.append(current_token)
+            current_token = ""
+    if current_token != "":
+        collected_tokens.append(current_token)
+    return collected_tokens
 
 
 def tokenize_japanese(text):
