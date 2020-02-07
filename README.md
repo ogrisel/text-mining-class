@@ -132,7 +132,7 @@ and the official [Python extension
 
 Open this project folder ("text-mining-class") in the editor.
 
-Make sur to select the `tmclass` conda environment in the bottom left of
+Make sure to select the `tmclass` conda environment in the bottom left of
 the main window. You can switch with `Shitf-Ctrl-P` > `Python: Select
 Interpreter`.
 
