@@ -1,4 +1,4 @@
-# import unicodedata
+import unicodedata
 
 
 def code_points(text, normalize=None):
@@ -18,7 +18,11 @@ def code_points(text, normalize=None):
     #   using the NFC scheme.
 
     results = []
-    # TODO: write me!
+    if normalize:
+        results = [ord(caractere)
+                   for caractere in unicodedata.normalize(normalize, text)]
+    else:
+        results = [ord(caractere) for caractere in text]
     return results
 
 
@@ -32,7 +36,12 @@ def character_categories(text, normalize=None):
     # - `unicodedata.category(c)` returns the categoriy of character `c`
 
     categories = []
-    # TODO: write me!
+    if normalize:
+        categories = [unicodedata.category(caractere)
+                      for caractere in unicodedata.normalize(normalize, text)]
+    else:
+        categories = [unicodedata.category(caractere)
+                      for caractere in text]
     return categories
 
 
@@ -50,10 +59,16 @@ def remove_accents(text):
     # - `unicodedata.combining(c)` returns whether `c` is a combining character
     #   (in particular accents and other diacritical marks).
     # - It is possible to assemble characters into (unicode) strings using the
-    #   `+` operator: `"abc" + "123" == "abc123"`
+    #   `+` operator: `"abc" + "1234" == "abc1234"`
 
-    # TODO: write me!
-    return ""
+    texte = ""
+    for caractere in text:
+        if len(unicodedata.normalize("NFD", caractere)) >= 2:
+            texte += unicodedata.normalize("NFD", caractere)[0]
+        else:
+            texte += unicodedata.normalize("NFD", caractere)
+
+    return texte
 
 
 def tokenize_generic(text):
@@ -68,8 +83,19 @@ def tokenize_generic(text):
     # - The list of categories is available at:
     # http://www.unicode.org/reports/tr44/tr44-6.html#General_Category_Values
 
-    # TODO: write me!
-    return []
+    resultat = []
+    ignoreValues = ["P", "Z", "C"]
+    texte = ""
+    for caractere in text:
+        if unicodedata.category(caractere)[0] not in ignoreValues:
+            texte += caractere
+        else:
+            if texte:
+                resultat.append(texte)
+                texte = ""
+    if texte:
+        resultat.append(texte)
+    return resultat
 
 
 def tokenize_japanese(text):
@@ -84,5 +110,6 @@ def tokenize_japanese(text):
     # - Read the online documentation of the janome package to only return
     #   the surface form for each token.
 
-    # TODO: write me!
-    return []
+    from janome.tokenizer import Tokenizer
+    t = Tokenizer()
+    return t.tokenize(text, wakati=True)
